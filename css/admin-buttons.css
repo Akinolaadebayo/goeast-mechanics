@@ -1,0 +1,59 @@
+/* =========================================================
+   ADMIN BUTTONS
+   File: css/admin-buttons.css
+   ========================================================= */
+
+   button,
+   .btn {
+     font-family: inherit;
+   }
+   
+   button {
+     cursor: pointer;
+   }
+   
+   .btn-primary,
+   .toolbar button,
+   .inventory-toolbar button,
+   .inventory-form button[type="submit"] {
+     background: var(--color-primary);
+     color: #fff;
+     border: 0;
+     border-radius: var(--radius-sm);
+     padding: 14px 20px;
+     font-weight: 900;
+   }
+   
+   .btn-primary:hover,
+   .toolbar button:hover,
+   .inventory-toolbar button:hover {
+     background: var(--color-primary-dark);
+   }
+   
+   .table-action-btn,
+   .secondary-action-btn {
+     background: var(--color-navy);
+     color: #fff;
+     border: 0;
+     border-radius: var(--radius-sm);
+     padding: 10px 14px;
+     font-weight: 900;
+   }
+   
+   .secondary-action-btn {
+     background: #274867;
+   }
+   
+   .danger-action-btn {
+     background: var(--color-danger);
+     color: #fff;
+     border: 0;
+     border-radius: var(--radius-sm);
+     padding: 10px 14px;
+     font-weight: 900;
+   }
+   
+   button:disabled {
+     opacity: .55;
+     cursor: not-allowed;
+   }

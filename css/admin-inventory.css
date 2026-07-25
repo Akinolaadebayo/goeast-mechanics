@@ -1,0 +1,762 @@
+/* =========================================================
+   GO EAST MECHANICS â€” ADMIN INVENTORY STYLES
+   File: css/admin-inventory.css
+
+   Important:
+   Inventory table structure, widths, sticky columns, checkboxes,
+   and row action button styling belong in admin-tables.css.
+
+   This file controls:
+   - Toolbar
+   - Pagination
+   - Add-item form
+   - Bulk-bar spacing
+   - Inventory history
+   - Status badges
+   - Inventory action-center modal
+   ========================================================= */
+
+
+/* =========================================================
+   1. TOOLBAR
+   ========================================================= */
+
+   .inventory-toolbar {
+    display: grid;
+    grid-template-columns:
+      minmax(300px, 1.5fr)
+      minmax(160px, 0.7fr)
+      minmax(160px, 0.7fr)
+      minmax(160px, 0.7fr)
+      minmax(205px, 0.85fr);
+    gap: 14px;
+  
+    margin-bottom: 24px;
+    padding: 18px;
+  
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+  
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  }
+  
+  .inventory-toolbar input,
+  .inventory-toolbar select,
+  .inventory-toolbar button {
+    min-width: 0;
+    min-height: 52px;
+  
+    border-radius: 10px;
+  
+    font-weight: 800;
+  }
+  
+  .inventory-toolbar input,
+  .inventory-toolbar select {
+    width: 100%;
+    padding: 0 16px;
+  
+    color: #0a2342;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+  }
+  
+  .inventory-toolbar input:focus,
+  .inventory-toolbar select:focus {
+    border-color: #2563eb;
+    outline: 3px solid rgba(37, 99, 235, 0.14);
+  }
+  
+  .inventory-toolbar button {
+    border: 0;
+  
+    color: #ffffff;
+    background: #e63946;
+  
+    cursor: pointer;
+  
+    transition:
+      transform 0.16s ease,
+      background-color 0.16s ease,
+      box-shadow 0.16s ease;
+  }
+  
+  .inventory-toolbar button:hover {
+    transform: translateY(-1px);
+  
+    background: #cf2f3c;
+  
+    box-shadow: 0 9px 20px rgba(230, 57, 70, 0.2);
+  }
+  
+  
+  /* =========================================================
+     2. PAGINATION
+     ========================================================= */
+  
+  .inventory-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  
+    margin: 18px 0 24px;
+    padding: 14px 18px;
+  
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+  
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+  }
+  
+  .inventory-pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .inventory-pagination select {
+    min-width: 150px;
+    min-height: 46px;
+  
+    padding: 0 14px;
+  
+    color: #0a2342;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+  
+    font-weight: 800;
+  }
+  
+  .inventory-pagination button {
+    min-height: 42px;
+  
+    padding: 12px 16px;
+  
+    color: #ffffff;
+    background: #0a2342;
+    border: 0;
+    border-radius: 10px;
+  
+    font-weight: 900;
+  
+    cursor: pointer;
+  }
+  
+  .inventory-pagination button:hover:not(:disabled) {
+    background: #163b63;
+  }
+  
+  .inventory-pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  
+  /* =========================================================
+     3. INVENTORY LIST AND BULK-BAR SPACING
+     ========================================================= */
+  
+  #inventoryList {
+    min-width: 0;
+  }
+  
+  #inventoryBulkBar {
+    margin-bottom: 16px;
+  }
+  
+  
+  /* =========================================================
+     4. STATUS BADGES
+     ========================================================= */
+  
+  .inventory-status,
+  .inventory-status-badge,
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  
+    min-width: 92px;
+  
+    padding: 8px 12px;
+  
+    border-radius: 999px;
+  
+    font-size: 0.72rem;
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  
+  .inventory-status.in-stock,
+  .status-badge.in-stock,
+  .status-badge.status-closed {
+    color: #166534;
+    background: #dcfce7;
+  }
+  
+  .inventory-status.low-stock,
+  .status-badge.low-stock,
+  .status-badge.status-waiting_parts {
+    color: #92400e;
+    background: #fef3c7;
+  }
+  
+  .inventory-status.out-of-stock,
+  .status-badge.out-of-stock,
+  .status-badge.status-cancelled {
+    color: #991b1b;
+    background: #fee2e2;
+  }
+  
+  
+  /* =========================================================
+     5. ADD INVENTORY ITEM FORM
+     ========================================================= */
+  
+  .inventory-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 16px;
+  
+    margin-bottom: 24px;
+    padding: 24px;
+  
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 6px solid #0a2342;
+    border-radius: 18px;
+  
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  }
+  
+  .inventory-form.hidden {
+    display: none;
+  }
+  
+  .inventory-form h3 {
+    grid-column: 1 / -1;
+  
+    margin: 0;
+  
+    color: #0a2342;
+  }
+  
+  .inventory-form input,
+  .inventory-form select,
+  .inventory-form textarea {
+    width: 100%;
+    min-width: 0;
+  
+    padding: 13px 14px;
+  
+    color: #0a2342;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+  
+    font-weight: 700;
+  }
+  
+  .inventory-form input:focus,
+  .inventory-form select:focus,
+  .inventory-form textarea:focus {
+    border-color: #2563eb;
+    outline: 3px solid rgba(37, 99, 235, 0.14);
+  }
+  
+  .inventory-form textarea {
+    grid-column: 1 / -1;
+  
+    min-height: 110px;
+  
+    resize: vertical;
+  }
+  
+  .inventory-form button[type="submit"] {
+    grid-column: span 2;
+  
+    min-height: 48px;
+  
+    padding: 14px 18px;
+  
+    color: #ffffff;
+    background: #0a2342;
+    border: 0;
+    border-radius: 10px;
+  
+    font-weight: 900;
+  
+    cursor: pointer;
+  }
+  
+  .inventory-form button[type="submit"]:hover {
+    background: #163b63;
+  }
+  
+  
+  /* =========================================================
+     6. INVENTORY HISTORY
+     ========================================================= */
+  
+  .inventory-history-row td {
+    padding: 18px;
+  
+    background: #f8fafc;
+  }
+  
+  .inventory-history-panel {
+    padding: 24px;
+  
+    background: #ffffff;
+    border: 1px solid #d9e2ef;
+    border-radius: 16px;
+  }
+  
+  .inventory-history-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+  
+    margin-bottom: 22px;
+  }
+  
+  .inventory-history-header h3 {
+    margin: 4px 0;
+  
+    color: #0a2342;
+  }
+  
+  .inventory-history-summary {
+    min-width: 150px;
+  
+    text-align: right;
+  }
+  
+  .inventory-history-summary strong {
+    display: block;
+  
+    margin-top: 8px;
+  
+    color: #0a2342;
+  
+    font-size: 2rem;
+  }
+  
+  .inventory-history-summary small {
+    color: #667085;
+  }
+  
+  .inventory-history-list {
+    display: grid;
+    gap: 14px;
+  }
+  
+  .inventory-history-item {
+    padding: 16px;
+  
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+    border-radius: 12px;
+  }
+  
+  .inventory-history-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .inventory-history-main small {
+    display: block;
+  
+    margin-top: 4px;
+  
+    color: #667085;
+  }
+  
+  .inventory-history-quantity {
+    font-size: 1.1rem;
+    font-weight: 900;
+  }
+  
+  .inventory-qty-positive {
+    color: #15803d;
+  }
+  
+  .inventory-qty-negative {
+    color: #dc2626;
+  }
+  
+  .inventory-history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+  
+    margin-top: 14px;
+  }
+  
+  .inventory-history-grid div {
+    padding: 12px;
+  
+    background: #ffffff;
+    border-radius: 10px;
+  }
+  
+  .inventory-history-grid span {
+    display: block;
+  
+    margin-bottom: 4px;
+  
+    color: #667085;
+  
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  
+  .inventory-history-notes {
+    margin-top: 14px;
+    padding: 12px;
+  
+    background: #ffffff;
+    border-radius: 10px;
+  }
+  
+  .inventory-history-empty {
+    padding: 18px;
+  
+    color: #667085;
+    background: #ffffff;
+    border-radius: 10px;
+  
+    text-align: center;
+  }
+  
+  
+  /* =========================================================
+     7. ROW STATES
+     ========================================================= */
+  
+  .archived-row {
+    opacity: 0.62;
+  }
+  
+  .archived-row td {
+    background: #f3f4f6 !important;
+  }
+  
+  
+  /* =========================================================
+     8. INVENTORY ACTION CENTER
+     ========================================================= */
+  
+  .inventory-action-center {
+    display: grid;
+    gap: 24px;
+  }
+  
+  .inventory-action-item-summary {
+    padding: 20px;
+  
+    background: #f8fafc;
+    border: 1px solid #d9e2ec;
+    border-left: 6px solid #0a2342;
+    border-radius: 14px;
+  }
+  
+  .inventory-action-item-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+  
+    margin-bottom: 18px;
+  }
+  
+  .inventory-action-kicker {
+    margin: 0 0 5px;
+  
+    color: #e63946;
+  
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  
+  .inventory-action-item-heading h3 {
+    margin: 0;
+  
+    color: #0a2342;
+  
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+  
+  .inventory-action-item-heading p:not(.inventory-action-kicker) {
+    margin: 5px 0 0;
+  
+    color: #667085;
+  
+    font-size: 0.88rem;
+  }
+  
+  .inventory-action-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  
+  .inventory-action-summary-grid > div {
+    min-width: 0;
+  
+    padding: 13px;
+  
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 11px;
+  }
+  
+  .inventory-action-summary-grid span,
+  .inventory-action-summary-grid strong {
+    display: block;
+  }
+  
+  .inventory-action-summary-grid span {
+    margin-bottom: 5px;
+  
+    color: #667085;
+  
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  
+  .inventory-action-summary-grid strong {
+    overflow-wrap: anywhere;
+  
+    color: #0a2342;
+  
+    font-size: 0.9rem;
+    font-weight: 900;
+  }
+  
+  .inventory-action-group {
+    display: grid;
+    gap: 14px;
+  }
+  
+  .inventory-action-group-heading h4 {
+    margin: 0;
+  
+    color: #0a2342;
+  
+    font-size: 1rem;
+    font-weight: 900;
+  }
+  
+  .inventory-action-group-heading p {
+    margin: 5px 0 0;
+  
+    color: #667085;
+  
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
+  
+  .inventory-action-center-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  
+  .inventory-action-center-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+  
+    width: 100%;
+    min-height: 90px;
+  
+    padding: 16px;
+  
+    color: #0a2342;
+    background: #ffffff;
+    border: 1px solid #d9e2ec;
+    border-radius: 13px;
+  
+    text-align: left;
+  
+    cursor: pointer;
+  
+    transition:
+      border-color 0.18s ease,
+      background-color 0.18s ease,
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+  
+  .inventory-action-center-btn:hover {
+    transform: translateY(-1px);
+  
+    background: #f2f8ff;
+    border-color: #8db9e8;
+  
+    box-shadow: 0 8px 18px rgba(10, 35, 66, 0.08);
+  }
+  
+  .inventory-action-center-btn > span:last-child {
+    min-width: 0;
+  }
+  
+  .inventory-action-center-btn strong,
+  .inventory-action-center-btn small {
+    display: block;
+  }
+  
+  .inventory-action-center-btn strong {
+    color: #0a2342;
+  
+    font-size: 0.9rem;
+    font-weight: 900;
+    line-height: 1.3;
+  }
+  
+  .inventory-action-center-btn small {
+    margin-top: 5px;
+  
+    color: #667085;
+  
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+  
+  .inventory-action-center-icon {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+  
+    width: 38px;
+    height: 38px;
+  
+    color: #ffffff;
+    background: #0a2342;
+    border-radius: 10px;
+  
+    font-size: 1rem;
+    font-weight: 900;
+  }
+  
+  .inventory-action-center-btn.warning {
+    background: #fffaf0;
+    border-color: #f1cf84;
+  }
+  
+  .inventory-action-center-btn.warning:hover {
+    background: #fff5dc;
+    border-color: #e6a928;
+  }
+  
+  .inventory-action-center-btn.warning .inventory-action-center-icon {
+    background: #a66300;
+  }
+  
+  .inventory-action-center-btn.danger {
+    background: #fff6f6;
+    border-color: #f3b2b2;
+  }
+  
+  .inventory-action-center-btn.danger:hover {
+    background: #fff0f0;
+    border-color: #d62828;
+  }
+  
+  .inventory-action-center-btn.danger .inventory-action-center-icon {
+    background: #d62828;
+  }
+  
+  .inventory-record-management {
+    padding-top: 20px;
+  
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  
+  /* =========================================================
+     9. RESPONSIVE
+     ========================================================= */
+  
+  @media (max-width: 1200px) {
+    .inventory-toolbar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  
+    .inventory-toolbar input[type="search"] {
+      grid-column: 1 / -1;
+    }
+  
+    .inventory-toolbar button {
+      grid-column: 1 / -1;
+    }
+  
+    .inventory-form {
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+    }
+  }
+  
+  @media (max-width: 850px) {
+    .inventory-action-summary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  
+    .inventory-action-center-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 760px) {
+    .inventory-toolbar,
+    .inventory-form {
+      grid-template-columns: 1fr;
+    }
+  
+    .inventory-toolbar input[type="search"],
+    .inventory-toolbar button {
+      grid-column: auto;
+    }
+  
+    .inventory-form button[type="submit"] {
+      grid-column: 1;
+    }
+  
+    .inventory-pagination,
+    .inventory-history-header {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .inventory-pagination-controls {
+      flex-wrap: wrap;
+    }
+  
+    .inventory-history-summary {
+      text-align: left;
+    }
+  }
+  
+  @media (max-width: 560px) {
+    .inventory-action-item-heading {
+      flex-direction: column;
+    }
+  
+    .inventory-action-summary-grid {
+      grid-template-columns: 1fr;
+    }
+  }

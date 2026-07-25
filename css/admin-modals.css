@@ -1,0 +1,21 @@
+/* =========================================================
+   ADMIN MODALS
+   File: css/admin-modals.css
+
+   Current modal framework now lives in:
+   - js/ui/admin-components.js
+   - css/admin-workspace.css
+
+   This file is intentionally kept as a safe compatibility file.
+   Do not define .admin-modal-backdrop, .admin-modal-box,
+   .admin-modal-header, .admin-modal-body, or .admin-modal-footer here.
+========================================================= */
+
+/* Legacy modal only */
+.admin-modal {
+  width: min(780px, 92vw);
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+}

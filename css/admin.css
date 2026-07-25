@@ -1,0 +1,2015 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f6f8;
+  color: #222;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: 270px;
+  background: #0A2342;
+  color: white;
+  min-height: 100vh;
+  padding: 25px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 35px;
+}
+
+.sidebar-logo span {
+  color: #E63946;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: #E63946;
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-footer a,
+.sidebar-footer button {
+  color: white;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+
+.sidebar-footer button {
+  background: #E63946;
+}
+
+.admin-main {
+  margin-left: 270px;
+  width: calc(100% - 270px);
+  padding: 30px;
+}
+
+.admin-topbar {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.top-label,
+.section-heading p {
+  color: #E63946;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-topbar h1,
+.section-heading h2 {
+  color: #0A2342;
+}
+
+.admin-user {
+  background: #f4f6f8;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #0A2342;
+}
+
+.admin-section {
+  display: none;
+}
+
+.active-section {
+  display: block;
+}
+
+.section-heading {
+  margin-bottom: 25px;
+}
+
+.section-heading h2 {
+  font-size: 32px;
+  margin-top: 5px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  border-top: 6px solid #0A2342;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card h3 {
+  font-size: 38px;
+  color: #0A2342;
+}
+
+.stat-card p {
+  color: #666;
+  margin-top: 5px;
+}
+
+.stat-card.blue {
+  border-top-color: #1976d2;
+}
+
+.stat-card.orange {
+  border-top-color: #ff9800;
+}
+
+.stat-card.green {
+  border-top-color: #2e7d32;
+}
+
+.stat-card.red {
+  border-top-color: #d32f2f;
+}
+
+.toolbar {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.toolbar input,
+.toolbar select,
+.toolbar button {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.toolbar input {
+  flex: 1;
+}
+
+.toolbar button {
+  background: #E63946;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-form {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea,
+.admin-form button {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.admin-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.admin-form button {
+  background: #E63946;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary-action {
+  background: #0A2342 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.cards-list {
+  display: grid;
+  gap: 20px;
+}
+
+.request-card,
+.inventory-card,
+.invoice-card,
+.payment-card {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  border-left: 6px solid #0A2342;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.card-top h3 {
+  color: #0A2342;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.card-message,
+.card-notes {
+  background: #f4f6f8;
+  padding: 14px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.action-row input,
+.action-row select,
+.action-row textarea {
+  padding: 11px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.action-row button {
+  background: #0A2342;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 12px;
+}
+
+.delete-btn {
+  background: #d32f2f !important;
+}
+
+.status-badge,
+.payment-badge,
+.stock-badge,
+.priority-badge {
+  display: inline-block;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.status-new {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+
+.status-ongoing {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-finished {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-canceled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.payment-unpaid {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.payment-partial {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.payment-paid {
+  background: #d4edda;
+  color: #155724;
+}
+
+.payment-refunded {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.stock-ok {
+  background: #d4edda;
+  color: #155724;
+}
+
+.stock-low {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.priority-low {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.priority-normal {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+
+.priority-high {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.priority-urgent {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.empty-message {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  color: #666;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 900px) {
+  body {
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .admin-main {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .admin-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+  }
+}
+.profile-card {
+  background: #f4f6f8;
+  padding: 10px 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #0A2342;
+}
+
+.profile-card strong,
+.profile-card span {
+  display: block;
+}
+
+.profile-card span {
+  font-size: 13px;
+  color: #666;
+  margin-top: 3px;
+}
+
+.profile-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: #0A2342;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+.permission-notice {
+  background: #fff3cd;
+  color: #856404;
+  border-left: 6px solid #ff9800;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-weight: bold;
+}
+
+.status-acknowledged {
+  background: #ede7f6;
+  color: #4527a0;
+}
+
+.compact-actions {
+  grid-template-columns: minmax(180px, 280px);
+}
+
+.action-row button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.sidebar-role {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  margin: -18px 0 28px;
+  padding: 8px 12px;
+  text-transform: uppercase;
+}
+
+.top-subtitle {
+  color: #667085;
+  margin-top: 6px;
+}
+
+.profile-card small {
+  background: #0A2342;
+  border-radius: 999px;
+  color: white;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 7px;
+  padding: 5px 9px;
+  text-transform: uppercase;
+}
+
+.module-card {
+  background: white;
+  border-left: 6px solid #0A2342;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+}
+
+.module-card h3 {
+  color: #0A2342;
+  margin-bottom: 8px;
+}
+
+.module-card p {
+  color: #555;
+  line-height: 1.6;
+}
+/* =========================================================
+   CUSTOMER REPAIR CARD REDESIGN
+   Purpose:
+   Makes customer service requests look like professional
+   vehicle repair cards instead of cramped form records.
+   ========================================================= */
+
+   .customer-repair-card {
+    background: #ffffff;
+    border-left: 6px solid #0A2342;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.repair-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 22px;
+}
+
+.repair-card-label {
+    color: #E63946;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+    font-size: .85rem;
+    margin-bottom: 6px;
+}
+
+.repair-card-header h3 {
+    color: #0A2342;
+    font-size: 1.45rem;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.vehicle-plate {
+    margin-top: 8px;
+    color: #333;
+    font-weight: 700;
+    background: #f1f4f8;
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 999px;
+}
+
+.customer-status-badge {
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.status-customer-new {
+    background: #e8f3ff;
+    color: #0055aa;
+}
+
+.status-customer-active {
+    background: #e8f0ff;
+    color: #1f4fd8;
+}
+
+.status-customer-warning {
+    background: #fff3d8;
+    color: #9a6400;
+}
+
+.status-customer-ready {
+    background: #e5f8ea;
+    color: #1d7a35;
+}
+
+.status-customer-complete {
+    background: #e7f7ee;
+    color: #176b3a;
+}
+
+.status-customer-cancelled {
+    background: #fde7e7;
+    color: #b42318;
+}
+
+.repair-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.repair-summary-item {
+    background: #f4f6f8;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.repair-summary-item span {
+    display: block;
+    color: #666;
+    font-size: .85rem;
+    font-weight: 700;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.repair-summary-item strong {
+    color: #0A2342;
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.repair-info-block {
+    background: #f4f6f8;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 14px;
+}
+
+.repair-info-block strong {
+    color: #0A2342;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.repair-info-block p {
+    color: #222;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.repair-info-block small {
+    display: block;
+    margin-top: 8px;
+    color: #666;
+}
+
+.timeline-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.timeline-item {
+    border-left: 4px solid #0A2342;
+    padding-left: 14px;
+}
+
+@media(max-width: 900px) {
+    .repair-card-header {
+        flex-direction: column;
+    }
+
+    .repair-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-status-badge {
+        white-space: normal;
+    }
+}
+/* =========================================================
+   ADMIN SERVICE REQUEST CARD UPGRADE
+   Purpose:
+   Makes staff repair cards easier to scan and more professional.
+   ========================================================= */
+
+   .admin-request-card {
+    padding: 28px;
+}
+
+.admin-request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 22px;
+}
+
+.admin-card-label {
+    color: #E63946;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+    font-size: .85rem;
+    margin-bottom: 6px;
+}
+
+.admin-request-header h3 {
+    color: #0A2342;
+    font-size: 1.45rem;
+    margin: 0;
+}
+
+.admin-request-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.admin-request-grid div {
+    background: #f4f6f8;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.admin-request-grid span {
+    display: block;
+    color: #666;
+    font-size: .78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 6px;
+}
+
+.admin-request-grid strong {
+    color: #0A2342;
+    line-height: 1.35;
+}
+
+@media(max-width: 900px) {
+    .admin-request-header {
+        flex-direction: column;
+    }
+}
+/* =========================================================
+   ADMIN REQUEST TABLE LAYOUT
+   Purpose:
+   Converts admin service requests into a scalable table-first
+   workflow with expandable job management panels.
+   ========================================================= */
+
+   .admin-requests-table-wrap {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow-x: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.admin-requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+}
+
+.admin-requests-table thead {
+    background: #0A2342;
+    color: #ffffff;
+}
+
+.admin-requests-table th {
+    padding: 16px;
+    text-align: left;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.admin-requests-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e4e8ee;
+    vertical-align: top;
+    color: #0A2342;
+}
+
+.admin-requests-table td strong {
+    display: block;
+    color: #0A2342;
+    font-weight: 800;
+}
+
+.admin-requests-table td small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: .78rem;
+}
+
+.table-action-btn {
+    border: none;
+    background: #0A2342;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.table-action-btn:hover {
+    background: #E63946;
+}
+
+.admin-request-details-row td {
+    background: #f4f6f8;
+    padding: 0;
+}
+
+.admin-request-detail-panel {
+    background: #ffffff;
+    margin: 18px;
+    padding: 28px;
+    border-radius: 16px;
+    border-left: 6px solid #0A2342;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.admin-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 22px;
+}
+
+.admin-detail-header h3 {
+    color: #0A2342;
+    font-size: 1.45rem;
+    margin: 0;
+}
+
+@media(max-width: 900px) {
+    .admin-request-detail-panel {
+        margin: 12px;
+        padding: 20px;
+    }
+
+    .admin-detail-header {
+        flex-direction: column;
+    }
+}
+/* =========================================================
+   CREATE JOB CARD PANEL
+   Purpose:
+   Styles the intake-to-job conversion box inside admin requests.
+   ========================================================= */
+
+   .create-job-box {
+    background: #fff8e8;
+    border: 1px solid #ffd37a;
+    border-left: 6px solid #ff9800;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.create-job-box strong {
+    color: #0A2342;
+    font-size: 1.05rem;
+}
+
+.create-job-box p {
+    margin-top: 6px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.create-job-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin: 18px 0;
+}
+
+.create-job-grid label {
+    font-weight: 700;
+    color: #0A2342;
+}
+
+.create-job-grid input {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    border: 1px solid #d0d7de;
+    border-radius: 10px;
+    font-size: .95rem;
+}
+
+.create-job-card-btn {
+    background: #0A2342;
+    color: #ffffff;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.create-job-card-btn:hover {
+    background: #E63946;
+}
+/* =========================================================
+   MECHANIC JOB BOARD
+   ========================================================= */
+
+   .mechanic-workspace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.mechanic-workspace-grid label {
+    font-weight: 800;
+    color: #0A2342;
+}
+
+.mechanic-workspace-grid select,
+.mechanic-workspace-grid textarea {
+    width: 100%;
+    margin-top: 7px;
+    padding: 12px;
+    border: 1px solid #d0d7de;
+    border-radius: 10px;
+    font-size: .95rem;
+}
+
+.mechanic-workspace-grid textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.save-mechanic-job-btn {
+    margin-top: 20px;
+    background: #0A2342;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.save-mechanic-job-btn:hover {
+    background: #E63946;
+}
+/* =========================================================
+   ADMIN TOAST NOTIFICATION
+
+   Shared notification styling for:
+   - Inventory
+   - Mechanic Jobs
+   - Service Requests
+   - Labour
+   - Parts
+   - Future admin modules
+   ========================================================= */
+
+   .admin-toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 10000;
+  
+    width: min(420px, calc(100vw - 32px));
+  
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  
+    pointer-events: none;
+  }
+  
+  .admin-toast {
+    width: 100%;
+    padding: 16px 20px;
+  
+    border-radius: 12px;
+    border-left: 6px solid transparent;
+  
+    background: #0a2342;
+    color: #ffffff;
+  
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  
+    opacity: 0;
+    transform: translateY(-15px);
+  
+    pointer-events: auto;
+    cursor: pointer;
+  
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+  
+  .admin-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .admin-toast strong {
+    display: block;
+    margin-bottom: 5px;
+  
+    color: inherit;
+    font-size: 0.95rem;
+    font-weight: 900;
+  }
+  
+  .admin-toast p {
+    margin: 0;
+  
+    color: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+  
+  .admin-toast-success,
+  .admin-toast.success {
+    background: #198754;
+    border-left-color: #b7f5cc;
+  }
+  
+  .admin-toast-error,
+  .admin-toast.error,
+  .admin-toast-danger,
+  .admin-toast.danger {
+    background: #d62828;
+    border-left-color: #ffb3b3;
+  }
+  
+  .admin-toast-warning,
+  .admin-toast.warning {
+    background: #a66300;
+    border-left-color: #ffe2a8;
+  }
+  
+  .admin-toast-info,
+  .admin-toast.info {
+    background: #0a5ea8;
+    border-left-color: #b8ddff;
+  }
+  
+  @media (max-width: 600px) {
+    .admin-toast-container {
+      top: 16px;
+      right: 16px;
+      left: 16px;
+      width: auto;
+    }
+  }
+
+.admin-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.admin-toast-success {
+    background: #198754;
+}
+
+.admin-toast-error {
+    background: #E63946;
+}
+.mechanic-board-toolbar {
+  background: #ffffff;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.06);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.mechanic-board-toolbar label {
+  font-weight: 800;
+  color: #0A2342;
+}
+
+.mechanic-board-toolbar select {
+  margin-left: 10px;
+  padding: 12px 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 10px;
+  font-size: .95rem;
+  font-weight: 700;
+  background: #ffffff;
+}
+/* =========================================================
+   MECHANIC BOARD TOOLBAR WITH SEARCH
+   ========================================================= */
+
+   .mechanic-board-toolbar {
+    background: #ffffff;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.06);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: end;
+}
+
+.mechanic-search-box,
+.mechanic-filter-box {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.mechanic-search-box label,
+.mechanic-filter-box label {
+    font-weight: 800;
+    color: #0A2342;
+}
+
+.mechanic-search-box input,
+.mechanic-filter-box select {
+    padding: 12px 14px;
+    border: 1px solid #d0d7de;
+    border-radius: 10px;
+    font-size: .95rem;
+    font-weight: 700;
+    background: #ffffff;
+}
+
+.mechanic-search-box input {
+    min-width: 360px;
+}
+
+@media(max-width: 900px) {
+    .mechanic-board-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .mechanic-search-box input {
+        min-width: unset;
+        width: 100%;
+    }
+}
+/* =========================================================
+   SERVICE REQUEST TABLE ALIGNMENT FIX
+   Purpose:
+   Makes Service Requests table match the professional alignment
+   of the Mechanic Jobs table.
+   ========================================================= */
+
+   .admin-table-wrap,
+   .admin-data-table,
+   .admin-requests-table-wrap,
+   .admin-requests-table {
+     width: 100%;
+   }
+   
+   .admin-table-wrap,
+   .admin-requests-table-wrap {
+     background: #ffffff;
+     border-radius: 16px;
+     overflow-x: auto;
+     box-shadow: 0 10px 30px rgba(0,0,0,.08);
+   }
+   
+   .admin-data-table,
+   .admin-requests-table {
+     width: 100%;
+     border-collapse: collapse;
+     min-width: 1100px;
+     table-layout: fixed;
+   }
+   
+   .admin-data-table thead,
+   .admin-requests-table thead {
+     background: #0A2342;
+     color: #ffffff;
+   }
+   
+   .admin-data-table th,
+   .admin-requests-table th {
+     padding: 16px;
+     text-align: left;
+     font-size: .8rem;
+     text-transform: uppercase;
+     letter-spacing: .5px;
+     white-space: nowrap;
+   }
+   
+   .admin-data-table td,
+   .admin-requests-table td {
+     padding: 16px;
+     border-bottom: 1px solid #e4e8ee;
+     vertical-align: middle;
+     color: #0A2342;
+     word-break: normal;
+   }
+   
+   .admin-data-table td strong,
+   .admin-requests-table td strong {
+     display: block;
+     color: #0A2342;
+     font-weight: 800;
+   }
+   
+   .admin-data-table td small,
+   .admin-requests-table td small {
+     display: block;
+     margin-top: 5px;
+     color: #666;
+     font-size: .78rem;
+     line-height: 1.3;
+   }
+   
+   /* Column sizing for Service Requests table */
+   .admin-data-table th:nth-child(1),
+   .admin-data-table td:nth-child(1) {
+     width: 18%;
+   }
+   
+   .admin-data-table th:nth-child(2),
+   .admin-data-table td:nth-child(2) {
+     width: 20%;
+   }
+   
+   .admin-data-table th:nth-child(3),
+   .admin-data-table td:nth-child(3) {
+     width: 12%;
+   }
+   
+   .admin-data-table th:nth-child(4),
+   .admin-data-table td:nth-child(4) {
+     width: 13%;
+   }
+   
+   .admin-data-table th:nth-child(5),
+   .admin-data-table td:nth-child(5) {
+     width: 11%;
+   }
+   
+   .admin-data-table th:nth-child(6),
+   .admin-data-table td:nth-child(6) {
+     width: 9%;
+   }
+   
+   .admin-data-table th:nth-child(7),
+   .admin-data-table td:nth-child(7) {
+     width: 13%;
+   }
+   
+   .admin-data-table th:nth-child(8),
+   .admin-data-table td:nth-child(8) {
+     width: 8%;
+   }
+   
+   /* =========================================================
+      EXISTING JOB CARD / ADDITIONAL JOB CARD PANEL
+      Purpose:
+      Shows existing mechanic job cards and allows controlled
+      additional job-card creation.
+      ========================================================= */
+   
+   .existing-job-card-box {
+     background: #eef7ff;
+     border: 1px solid #b9dcff;
+     border-left: 6px solid #1976d2;
+     border-radius: 14px;
+     padding: 20px;
+     margin: 18px 0;
+   }
+   
+   .existing-job-card-box strong {
+     color: #0A2342;
+     font-size: 1.05rem;
+   }
+   
+   .existing-job-card-box p {
+     margin-top: 6px;
+     color: #555;
+     line-height: 1.5;
+   }
+   
+   .existing-job-list {
+     margin: 14px 0;
+     padding-left: 20px;
+     color: #0A2342;
+   }
+   
+   .existing-job-list li {
+     margin-bottom: 8px;
+   }
+   
+   .existing-job-list span {
+     margin-left: 8px;
+     color: #555;
+   }
+   
+   .show-additional-job-btn {
+     background: #0A2342;
+     color: #ffffff;
+     border: none;
+     padding: 13px 20px;
+     border-radius: 10px;
+     font-weight: 900;
+     cursor: pointer;
+   }
+   
+   .show-additional-job-btn:hover {
+     background: #E63946;
+   }
+   
+   .additional-job-form {
+     margin-top: 18px;
+     padding-top: 18px;
+     border-top: 1px solid #b9dcff;
+   }
+   /* ===== Cleaner Service Requests table column layout ===== */
+
+.service-requests-table {
+  table-layout: fixed;
+  min-width: 1200px;
+}
+
+.service-requests-table th,
+.service-requests-table td {
+  vertical-align: middle;
+}
+
+.service-requests-table th:nth-child(1),
+.service-requests-table td:nth-child(1) {
+  width: 18%;
+}
+
+.service-requests-table th:nth-child(2),
+.service-requests-table td:nth-child(2) {
+  width: 11%;
+}
+
+.service-requests-table th:nth-child(3),
+.service-requests-table td:nth-child(3) {
+  width: 10%;
+}
+
+.service-requests-table th:nth-child(4),
+.service-requests-table td:nth-child(4) {
+  width: 12%;
+}
+
+.service-requests-table th:nth-child(5),
+.service-requests-table td:nth-child(5) {
+  width: 8%;
+}
+
+.service-requests-table th:nth-child(6),
+.service-requests-table td:nth-child(6) {
+  width: 13%;
+}
+
+.service-requests-table th:nth-child(7),
+.service-requests-table td:nth-child(7) {
+  width: 10%;
+}
+
+.service-requests-table th:nth-child(8),
+.service-requests-table td:nth-child(8) {
+  width: 9%;
+}
+
+.service-requests-table th:nth-child(9),
+.service-requests-table td:nth-child(9) {
+  width: 13%;
+}
+
+.service-requests-table th:nth-child(10),
+.service-requests-table td:nth-child(10) {
+  width: 8%;
+}
+/* =========================================================
+   ADMIN REQUEST ARCHIVE / DELETE ACTIONS
+   ========================================================= */
+
+   .admin-request-actions {
+    background: #fff7e8;
+    border: 1px solid #ffb347;
+    border-left: 6px solid #ff9800;
+    border-radius: 14px;
+    padding: 18px;
+    margin: 18px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .admin-request-actions strong {
+    color: #0A2342;
+    font-size: 1rem;
+  }
+  
+  .admin-request-actions p {
+    color: #555;
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+  
+  .admin-request-action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .secondary-action-btn,
+  .danger-action-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  
+  .secondary-action-btn {
+    background: #0A2342;
+    color: #ffffff;
+  }
+  
+  .secondary-action-btn:hover {
+    background: #123b6d;
+  }
+  
+  .danger-action-btn {
+    background: #d62828;
+    color: #ffffff;
+  }
+  
+  .danger-action-btn:hover {
+    background: #a4161a;
+  }
+  
+  .archived-row {
+    opacity: .7;
+    background: #f3f4f6;
+  }
+  
+  @media(max-width: 900px) {
+    .admin-request-actions {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  /* =========================================================
+   SERVICE REQUEST DETAIL CARD POLISH
+   Purpose:
+   Makes the opened service request look like a professional
+   admin intake review panel.
+   ========================================================= */
+
+.service-request-detail-card {
+  background: #ffffff;
+  border-left: 6px solid #0A2342;
+  border-radius: 18px;
+  padding: 28px;
+  margin: 18px 0;
+  box-shadow: 0 12px 32px rgba(0,0,0,.08);
+}
+
+.service-request-detail-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.service-request-detail-card .section-kicker {
+  color: #E63946;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.service-request-detail-card h3 {
+  color: #0A2342;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.service-request-detail-card .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.service-request-detail-card .info-tile {
+  background: #f3f5f8;
+  border-radius: 14px;
+  padding: 16px;
+  min-height: 86px;
+}
+
+.service-request-detail-card .info-tile span {
+  display: block;
+  color: #666;
+  font-size: .78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+}
+
+.service-request-detail-card .info-tile strong {
+  color: #0A2342;
+  font-size: 1rem;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.service-request-detail-card .card-message,
+.service-request-detail-card .card-notes {
+  background: #f3f5f8;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 14px 0;
+}
+
+.service-request-detail-card .card-message strong,
+.service-request-detail-card .card-notes strong {
+  color: #0A2342;
+}
+
+.service-request-detail-card .card-message p,
+.service-request-detail-card .card-notes p {
+  margin-top: 5px;
+  color: #222;
+  line-height: 1.45;
+}
+
+@media(max-width: 800px) {
+  .service-request-detail-card {
+    padding: 20px;
+  }
+
+  .service-request-detail-card .card-top {
+    flex-direction: column;
+  }
+}
+/* =========================================================
+   INVENTORY MODULE
+   ========================================================= */
+
+   .inventory-toolbar {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 1fr 220px 220px;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  }
+  
+  .inventory-toolbar input,
+  .inventory-toolbar select,
+  .inventory-toolbar button,
+  .inventory-form input,
+  .inventory-form textarea,
+  .inventory-form button {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccd3dc;
+    border-radius: 10px;
+    font: inherit;
+  }
+  
+  .inventory-toolbar button,
+  .inventory-form button {
+    background: #E63946;
+    color: #ffffff;
+    border: none;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  
+  .inventory-form {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  }
+  
+  .inventory-form textarea {
+    grid-column: 1 / -1;
+    min-height: 90px;
+  }
+  
+  .inventory-form button {
+    grid-column: 1 / -1;
+  }
+  
+  .inventory-table {
+    min-width: 1100px;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  @media(max-width: 900px) {
+    .inventory-toolbar,
+    .inventory-form {
+      grid-template-columns: 1fr;
+    }
+  }
+  /* =========================================================
+   INVENTORY UI POLISH FIX
+   Purpose:
+   Forces Inventory toolbar/table controls to match the rest
+   of the admin dashboard design.
+   ========================================================= */
+
+#inventorySection .inventory-toolbar {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 22px 0;
+  display: grid;
+  grid-template-columns: 1fr 220px 220px;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+#inventorySection .inventory-toolbar input,
+#inventorySection .inventory-toolbar select,
+#inventorySection .inventory-toolbar button {
+  width: 100%;
+  height: 54px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #ccd3dc;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#inventorySection .inventory-toolbar button {
+  background: #E63946;
+  color: #ffffff;
+  border: none;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+#inventorySection .inventory-toolbar button:hover {
+  background: #d62828;
+}
+
+#inventorySection .inventory-table th,
+#inventorySection .inventory-table td {
+  padding: 18px;
+}
+
+@media(max-width: 900px) {
+  #inventorySection .inventory-toolbar {
+    grid-template-columns: 1fr;
+  }
+}/* =========================================================
+   INVENTORY TABLE ALIGNMENT + FILTER BAR FIX
+   ========================================================= */
+
+#inventorySection .inventory-toolbar {
+  grid-template-columns: 1.5fr 180px 180px 180px 220px;
+}
+
+#inventorySection .admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+#inventorySection .inventory-table {
+  width: 100%;
+  min-width: 1250px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#inventorySection .inventory-table th,
+#inventorySection .inventory-table td {
+  text-align: left;
+  vertical-align: middle;
+  padding: 18px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+#inventorySection .inventory-table th:nth-child(1),
+#inventorySection .inventory-table td:nth-child(1) {
+  width: 18%;
+}
+
+#inventorySection .inventory-table th:nth-child(2),
+#inventorySection .inventory-table td:nth-child(2) {
+  width: 11%;
+}
+
+#inventorySection .inventory-table th:nth-child(3),
+#inventorySection .inventory-table td:nth-child(3) {
+  width: 11%;
+}
+
+#inventorySection .inventory-table th:nth-child(4),
+#inventorySection .inventory-table td:nth-child(4) {
+  width: 13%;
+}
+
+#inventorySection .inventory-table th:nth-child(5),
+#inventorySection .inventory-table td:nth-child(5),
+#inventorySection .inventory-table th:nth-child(6),
+#inventorySection .inventory-table td:nth-child(6),
+#inventorySection .inventory-table th:nth-child(7),
+#inventorySection .inventory-table td:nth-child(7) {
+  width: 8%;
+  text-align: center;
+}
+
+#inventorySection .inventory-table th:nth-child(8),
+#inventorySection .inventory-table td:nth-child(8),
+#inventorySection .inventory-table th:nth-child(9),
+#inventorySection .inventory-table td:nth-child(9) {
+  width: 9%;
+}
+
+#inventorySection .inventory-table th:nth-child(10),
+#inventorySection .inventory-table td:nth-child(10) {
+  width: 13%;
+}
+
+.inventory-item-cell strong {
+  display: block;
+  color: #0A2342;
+}
+
+.inventory-item-cell small {
+  display: block;
+  color: #666;
+  margin-top: 5px;
+}
+
+@media(max-width: 1100px) {
+  #inventorySection .inventory-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media(max-width: 700px) {
+  #inventorySection .inventory-toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   INVENTORY ACTION BUTTONS
+   ========================================================= */
+
+   #inventorySection .inventory-table {
+    min-width: 1450px;
+  }
+  
+  #inventorySection .inventory-table th:nth-child(11),
+  #inventorySection .inventory-table td:nth-child(11) {
+    width: 260px;
+  }
+  
+  .inventory-actions-cell {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .inventory-actions-cell button {
+    padding: 10px 12px;
+    border-radius: 9px;
+    font-size: .85rem;
+  }
+  
+  .inventory-actions-cell .secondary-action-btn {
+    background: #24415f;
+    color: #ffffff;
+  }
+  
+  .inventory-actions-cell .danger-action-btn {
+    background: #d62828;
+    color: #ffffff;
+  }
+  /* =========================================================
+   INVENTORY PAGINATION
+   ========================================================= */
+
+.inventory-pagination {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
+}
+
+.inventory-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inventory-pagination select,
+.inventory-pagination button {
+  padding: 10px 14px;
+  border-radius: 9px;
+  border: 1px solid #ccd3dc;
+  font-weight: 700;
+}
+
+.inventory-pagination button {
+  background: #0A2342;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.inventory-pagination button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+@media(max-width: 700px) {
+  .inventory-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inventory-pagination-controls {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .inventory-pagination select,
+  .inventory-pagination button {
+    width: 100%;
+  }
+}
+.labour-entry-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.labour-entry-card {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #d9e2ef;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.labour-entry-main,
+.labour-entry-metrics {
+  display: grid;
+  gap: 10px;
+}
+
+.labour-entry-metrics {
+  grid-template-columns: repeat(3, minmax(90px, 1fr));
+}
+
+.labour-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #667085;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.labour-notes {
+  margin: 6px 0 0;
+  color: #475467;
+  line-height: 1.45;
+}
+
+.labour-entry-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .labour-entry-card {
+    grid-template-columns: 1fr;
+  }
+
+  .labour-entry-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+.parts-entry-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.parts-entry-card {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #d9e2ef;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.parts-entry-main,
+.parts-entry-metrics {
+  display: grid;
+  gap: 10px;
+}
+
+.parts-entry-metrics {
+  grid-template-columns: repeat(3, minmax(90px, 1fr));
+}
+
+.parts-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #667085;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.parts-notes {
+  margin: 6px 0 0;
+  color: #475467;
+  line-height: 1.45;
+}
+
+.parts-entry-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .parts-entry-card {
+    grid-template-columns: 1fr;
+  }
+
+  .parts-entry-metrics {
+    grid-template-columns: 1fr;
+  }
+}

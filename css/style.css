@@ -1,0 +1,462 @@
+/* ===== Website reset, fonts, and general page setup ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #222;
+    line-height: 1.6;
+}
+
+/* ===== Navigation and hero banner styling ===== */
+
+.navbar {
+    background: #0A2342;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: #E63946;
+}
+
+.nav-links {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .3s;
+    white-space: nowrap;
+}
+
+.nav-links a:hover {
+    color: #E63946;
+}
+
+/* Auth links injected by js/script.js */
+#authNavLinks {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+/* Public logged-in profile badge */
+.public-profile-badge {
+    min-width: 170px;
+    padding: 8px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.public-profile-badge strong {
+    color: white;
+    font-size: .9rem;
+    font-weight: 700;
+}
+
+.public-profile-badge span {
+    color: #dce7f2;
+    font-size: .78rem;
+    margin-top: 3px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.menu-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.hero {
+    min-height: 85vh;
+    background: linear-gradient(
+        rgba(10,35,66,.85),
+        rgba(10,35,66,.85)
+    ),
+    url("https://images.unsplash.com/photo-1613214149922-f1809c99b414?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 0 8%;
+}
+
+.page-hero {
+    min-height: 60vh;
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.tagline {
+    color: #E63946;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.hero-text {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* ===== Sections, cards, and buttons used across pages ===== */
+
+.section {
+    padding: 80px 8%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title p {
+    color: #E63946;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: #0A2342;
+}
+
+.center-text {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.services-preview {
+    background: white;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    transition: .3s;
+    border-top: 4px solid #E63946;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card h3 {
+    color: #0A2342;
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 30px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.primary-btn {
+    background: #E63946;
+    color: white;
+}
+
+.secondary-btn {
+    background: white;
+    color: #0A2342;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+    transform: translateY(-3px);
+    opacity: .9;
+}
+
+/* ===== Why-us, contact form, CTA, footer, and mobile layout ===== */
+
+.why-us {
+    background: #0A2342;
+    color: white;
+}
+
+.why-us .section-title h2 {
+    color: white;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 20px;
+}
+
+.why-grid div {
+    background: rgba(255,255,255,.08);
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.contact-form {
+    max-width: 850px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.contact-form textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.contact-form button {
+    border: none;
+    cursor: pointer;
+}
+
+.cta {
+    background: #E63946;
+    color: white;
+    text-align: center;
+    padding: 80px 8%;
+}
+
+.cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.cta p {
+    margin-bottom: 30px;
+}
+
+.cta .primary-btn {
+    background: white;
+    color: #E63946;
+}
+
+footer {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+/* ===== Responsive layout ===== */
+
+@media(max-width: 1100px) {
+    .navbar {
+        padding: 18px 5%;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    #authNavLinks {
+        gap: 15px;
+    }
+
+    .public-profile-badge {
+        min-width: 145px;
+        padding: 8px 12px;
+    }
+}
+
+@media(max-width: 900px) {
+    .nav-links {
+        gap: 14px;
+        font-size: .9rem;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .public-profile-badge {
+        display: none;
+    }
+}
+
+@media(max-width: 768px) {
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        right: 20px;
+        top: 80px;
+        background: #0A2342;
+        padding: 20px;
+        border-radius: 10px;
+        width: 260px;
+        align-items: flex-start;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    #authNavLinks {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .public-profile-badge {
+        display: flex;
+        width: 100%;
+        min-width: unset;
+        margin-top: 8px;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .section-title h2,
+    .cta h2 {
+        font-size: 2rem;
+    }
+}
+/* ===== Booking profile card ===== */
+
+.booking-profile-card {
+    max-width: 850px;
+    margin: 0 auto 25px auto;
+    background: white;
+    border-left: 6px solid #0A2342;
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+.booking-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #0A2342;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
+
+.booking-profile-card p {
+    color: #E63946;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.booking-profile-card h3 {
+    color: #0A2342;
+    font-size: 1.3rem;
+    margin-bottom: 2px;
+}
+
+.booking-profile-card span {
+    color: #555;
+    font-size: .95rem;
+}
+
+.form-label {
+    font-weight: 800;
+    color: #0A2342;
+    margin-bottom: -10px;
+}
+
+.form-helper {
+    color: #666;
+    font-size: .95rem;
+    margin-top: -10px;
+    margin-bottom: -5px;
+}
+
+/* ===== Active public nav link ===== */
+
+.nav-links a.active-link {
+    color: #E63946;
+    border-bottom: 2px solid #E63946;
+    padding-bottom: 4px;
+}

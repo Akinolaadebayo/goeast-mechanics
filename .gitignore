@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Visual Studio Code personal settings
+.vscode/
+
+# Environment and private configuration
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Local archives and installers
+*.zip
+*.dmg
+
+# Supabase local runtime files
+supabase/.branches/
+supabase/.temp/
+
+# Vercel local project metadata
+.vercel/
+
+# Local legacy code backup
+legacy-backup/

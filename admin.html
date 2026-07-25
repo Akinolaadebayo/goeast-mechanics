@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Go East Mechanics Admin</title>
+
+
+  <!-- =======================================================
+       GLOBAL ADMIN DASHBOARD STYLES
+       ======================================================= -->
+
+  <link
+    rel="stylesheet"
+    href="css/admin.css"
+  >
+
+
+  <!-- =======================================================
+       SHARED ENTERPRISE WORKSPACE STYLES
+       ======================================================= -->
+
+  <link
+    rel="stylesheet"
+    href="css/admin-workspace.css"
+  >
+
+
+  <!-- =======================================================
+       MODULE STYLES
+       ======================================================= -->
+
+  <link
+    rel="stylesheet"
+    href="css/admin-workshop.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/admin-inventory.css"
+  >
+
+
+  <!--
+    Dedicated Mechanic Job Workspace styles.
+
+    This file must load after:
+    - admin-workspace.css
+    - admin-workshop.css
+
+    This allows the dedicated job workspace to extend and
+    refine the shared workspace and workshop components.
+  -->
+  <link
+    rel="stylesheet"
+    href="css/admin-job-workspace.css"
+  >
+
+
+  <!--
+    Shared enterprise table styles remain last so all admin
+    tables use the consistent responsive table framework.
+  -->
+  <link
+    rel="stylesheet"
+    href="css/admin-tables.css"
+  >
+</head>
+
+
+<body>
+
+  <!-- =========================================================
+       ADMIN SIDEBAR
+       ========================================================= -->
+
+  <aside class="sidebar">
+
+    <div>
+
+      <div class="sidebar-logo">
+        GO EAST
+        <span>MECHANICS</span>
+      </div>
+
+
+      <p
+        class="sidebar-role"
+        id="sidebarRoleLabel"
+      >
+        Checking access...
+      </p>
+
+
+      <nav class="sidebar-nav">
+
+        <button
+          type="button"
+          class="nav-btn active"
+          data-section="dashboardSection"
+          data-roles="developer,upper_admin,receptionist,mechanic"
+        >
+          Dashboard
+        </button>
+
+
+        <!--
+          Customer intake and identity are administrative.
+
+          Mechanics work from the Mechanic Jobs workspace,
+          where unnecessary customer identity is protected.
+        -->
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="requestsSection"
+          data-roles="developer,upper_admin,receptionist"
+        >
+          Service Requests
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="appointmentsSection"
+          data-roles="developer,upper_admin,receptionist"
+        >
+          Appointments
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="mechanicSection"
+          data-roles="developer,upper_admin,mechanic"
+        >
+          Mechanic Jobs
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="customersSection"
+          data-roles="developer,upper_admin,receptionist"
+        >
+          Customers
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="inventorySection"
+          data-roles="developer,upper_admin"
+        >
+          Inventory
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="invoicesSection"
+          data-roles="developer,upper_admin"
+        >
+          Invoices
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="paymentsSection"
+          data-roles="developer,upper_admin"
+        >
+          Payments
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="reportsSection"
+          data-roles="developer,upper_admin"
+        >
+          Reports
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-section="developerSection"
+          data-roles="developer"
+        >
+          Developer
+        </button>
+
+      </nav>
+
+    </div>
+
+
+    <div class="sidebar-footer">
+
+      <a href="index.html">
+        View Website
+      </a>
+
+
+      <button
+        type="button"
+        id="logoutBtn"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =========================================================
+       ADMIN MAIN CONTENT
+       ========================================================= -->
+
+  <main class="admin-main">
+
+
+    <!-- =======================================================
+         ADMIN TOPBAR
+         ======================================================= -->
+
+    <header class="admin-topbar">
+
+      <div>
+
+        <p
+          class="top-label"
+          id="staffRoleLabel"
+        >
+          Checking access...
+        </p>
+
+
+        <h1 id="staffDashboardTitle">
+          Go East Mechanics Dashboard
+        </h1>
+
+
+        <p
+          class="top-subtitle"
+          id="dashboardSubtitle"
+        >
+          Loading your secure workspace...
+        </p>
+
+      </div>
+
+
+      <div class="profile-card">
+
+        <div
+          class="profile-avatar"
+          id="profileInitials"
+        >
+          ?
+        </div>
+
+
+        <div>
+
+          <strong id="adminName">
+            Checking access...
+          </strong>
+
+
+          <span id="adminEmail">
+            Loading email...
+          </span>
+
+
+          <small id="adminRoleBadge">
+            Loading role...
+          </small>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =======================================================
+         DASHBOARD SECTION
+         ======================================================= -->
+
+    <section
+      id="dashboardSection"
+      class="admin-section active-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Role-Based Overview
+        </p>
+
+        <h2 id="dashboardSectionTitle">
+          Dashboard
+        </h2>
+
+      </div>
+
+
+      <div
+        id="roleNotice"
+        class="permission-notice hidden"
+      ></div>
+
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+
+          <h3 id="totalRequests">
+            0
+          </h3>
+
+          <p>
+            Total Requests
+          </p>
+
+        </div>
+
+
+        <div class="stat-card blue">
+
+          <h3 id="newRequests">
+            0
+          </h3>
+
+          <p>
+            New Requests
+          </p>
+
+        </div>
+
+
+        <div class="stat-card orange">
+
+          <h3 id="acknowledgedRequests">
+            0
+          </h3>
+
+          <p>
+            Acknowledged
+          </p>
+
+        </div>
+
+
+        <div class="stat-card orange">
+
+          <h3 id="ongoingRequests">
+            0
+          </h3>
+
+          <p>
+            Active Jobs
+          </p>
+
+        </div>
+
+
+        <div class="stat-card green">
+
+          <h3 id="finishedRequests">
+            0
+          </h3>
+
+          <p>
+            Ready / Closed
+          </p>
+
+        </div>
+
+
+        <div class="stat-card red">
+
+          <h3 id="canceledRequests">
+            0
+          </h3>
+
+          <p>
+            Cancelled Jobs
+          </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <h3 id="inventoryCount">
+            —
+          </h3>
+
+          <p>
+            Inventory Items
+          </p>
+
+        </div>
+
+
+        <div class="stat-card red">
+
+          <h3 id="lowStockCount">
+            —
+          </h3>
+
+          <p>
+            Low Stock
+          </p>
+
+        </div>
+
+
+        <div class="stat-card green">
+
+          <h3 id="paidInvoices">
+            —
+          </h3>
+
+          <p>
+            Payment Mode
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         SERVICE REQUESTS SECTION
+         ======================================================= -->
+
+    <section
+      id="requestsSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Service Management
+        </p>
+
+        <h2>
+          Service Requests
+        </h2>
+
+      </div>
+
+
+      <!--
+        Reusable Service Request workspace.
+
+        The normal request board is temporarily hidden while
+        this container is active.
+      -->
+      <section
+        id="workspaceContainer"
+        class="hidden"
+        aria-live="polite"
+      ></section>
+
+
+      <div class="toolbar">
+
+        <input
+          type="search"
+          id="requestSearch"
+          placeholder="Search by request, name, email, phone, vehicle, status..."
+          autocomplete="off"
+        >
+
+
+        <select id="requestStatusFilter">
+
+          <option value="active">
+            Active Requests
+          </option>
+
+
+          <option value="all_active">
+            All Jobs
+          </option>
+
+
+          <option value="ready_for_pickup">
+            Ready for Pickup
+          </option>
+
+
+          <option value="closed">
+            Closed Jobs
+          </option>
+
+
+          <option value="cancelled">
+            Cancelled Jobs
+          </option>
+
+
+          <option value="archived">
+            Archived Requests
+          </option>
+
+        </select>
+
+
+        <button
+          type="button"
+          id="refreshRequestsBtn"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+
+      <div
+        id="requestsList"
+        class="cards-list"
+      >
+
+        <p class="empty-message">
+          Loading service requests...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         APPOINTMENTS SECTION
+         ======================================================= -->
+
+    <section
+      id="appointmentsSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Reception Desk
+        </p>
+
+        <h2>
+          Appointments
+        </h2>
+
+      </div>
+
+
+      <div class="module-card">
+
+        <h3>
+          Appointment module planned
+        </h3>
+
+
+        <p>
+          Receptionists will use this later for booking,
+          check-in, and scheduling.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         MECHANIC JOBS SECTION
+         ======================================================= -->
+
+    <section
+      id="mechanicSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Workshop
+        </p>
+
+        <h2>
+          Mechanic Jobs
+        </h2>
+
+      </div>
+
+
+      <!--
+        Dedicated Mechanic Job Workspace.
+
+        This is separate from #workspaceContainer because:
+        - Service Requests own administration.
+        - Mechanic Jobs own workshop operations.
+        - Each workspace has its own return route and source board.
+      -->
+      <section
+        id="jobWorkspaceContainer"
+        class="hidden"
+        aria-live="polite"
+      ></section>
+
+
+      <!--
+        The mechanic board is the job index.
+
+        Selecting Open Job Workspace temporarily hides this
+        board without destroying its search or filter state.
+      -->
+      <div
+        id="mechanicJobsList"
+        class="cards-list"
+      >
+
+        <p class="empty-message">
+          Loading mechanic jobs...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         CUSTOMERS SECTION
+         ======================================================= -->
+
+    <section
+      id="customersSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Customer Desk
+        </p>
+
+        <h2>
+          Customers
+        </h2>
+
+      </div>
+
+
+      <div class="module-card">
+
+        <h3>
+          Customer management planned
+        </h3>
+
+
+        <p>
+          This will later connect profiles, vehicles,
+          service history, invoices, and communication.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         INVENTORY SECTION
+
+         Important:
+         Only the Add Inventory Item form remains in this HTML.
+
+         These actions are modal-based and must not have static
+         legacy forms in admin.html:
+
+         - Edit Item
+         - Receive Stock
+         - Adjust Stock
+         - View History
+         ======================================================= -->
+
+    <section
+      id="inventorySection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Inventory Management System
+        </p>
+
+
+        <h2>
+          Parts, Supplies, Tools, and Vehicles
+        </h2>
+
+      </div>
+
+
+      <!-- Inventory toolbar -->
+      <div class="inventory-toolbar">
+
+        <input
+          type="search"
+          id="inventorySearch"
+          placeholder="Search item, SKU, part number, category, brand, supplier..."
+          autocomplete="off"
+        >
+
+
+        <select id="inventoryStatusFilter">
+
+          <option value="active">
+            Active Items
+          </option>
+
+
+          <option value="low_stock">
+            Low Stock
+          </option>
+
+
+          <option value="inactive">
+            Inactive Items
+          </option>
+
+
+          <option value="all">
+            All Items
+          </option>
+
+        </select>
+
+
+        <select id="inventoryCategoryFilter">
+
+          <option value="all">
+            All Categories
+          </option>
+
+        </select>
+
+
+        <select id="inventoryBrandFilter">
+
+          <option value="all">
+            All Brands
+          </option>
+
+        </select>
+
+
+        <button
+          type="button"
+          id="showInventoryFormBtn"
+        >
+          Add Inventory Item
+        </button>
+
+      </div>
+
+
+      <!-- Add Inventory Item form -->
+      <form
+        id="inventoryForm"
+        class="inventory-form hidden"
+      >
+
+        <input
+          id="inventoryItemName"
+          type="text"
+          placeholder="Item Name"
+          required
+        >
+
+
+        <input
+          id="inventorySku"
+          type="text"
+          placeholder="SKU"
+        >
+
+
+        <input
+          id="inventoryPartNumber"
+          type="text"
+          placeholder="Part Number"
+        >
+
+
+        <input
+          id="inventoryCategory"
+          type="text"
+          placeholder="Category"
+        >
+
+
+        <input
+          id="inventoryBrand"
+          type="text"
+          placeholder="Brand"
+        >
+
+
+        <input
+          id="inventorySupplier"
+          type="text"
+          placeholder="Supplier"
+        >
+
+
+        <input
+          id="inventoryQuantity"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Opening Quantity"
+          required
+        >
+
+
+        <input
+          id="inventoryReorderLevel"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Reorder Level"
+        >
+
+
+        <input
+          id="inventoryMaxStock"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Max Stock"
+        >
+
+
+        <input
+          id="inventoryCostPrice"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Cost Price"
+        >
+
+
+        <input
+          id="inventorySellingPrice"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Selling Price"
+        >
+
+
+        <textarea
+          id="inventoryNotes"
+          placeholder="Notes"
+        ></textarea>
+
+
+        <button type="submit">
+          Save Inventory Item
+        </button>
+
+      </form>
+
+
+      <!--
+        Inventory table, pagination, statuses, and actions
+        are rendered dynamically by admin-inventory-items.js.
+      -->
+      <div
+        id="inventoryList"
+        class="cards-list"
+      >
+
+        <p class="empty-message">
+          Loading inventory...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         INVOICES SECTION
+         ======================================================= -->
+
+    <section
+      id="invoicesSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Invoicing
+        </p>
+
+        <h2>
+          Create and Track Invoices
+        </h2>
+
+      </div>
+
+
+      <div
+        id="invoicesList"
+        class="cards-list"
+      >
+
+        <p class="empty-message">
+          Invoice module is reserved for Developer and
+          Upper Admin access.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         PAYMENTS SECTION
+         ======================================================= -->
+
+    <section
+      id="paymentsSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Payment Tracker
+        </p>
+
+        <h2>
+          Track Payments
+        </h2>
+
+      </div>
+
+
+      <div
+        id="paymentsList"
+        class="cards-list"
+      >
+
+        <p class="empty-message">
+          Payments are manually recorded from the external
+          payment portal.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         REPORTS SECTION
+         ======================================================= -->
+
+    <section
+      id="reportsSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Business Intelligence
+        </p>
+
+        <h2>
+          Reports
+        </h2>
+
+      </div>
+
+
+      <div class="module-card">
+
+        <h3>
+          Reports planned
+        </h3>
+
+
+        <p>
+          Reports will show request volume, invoice totals,
+          payment status, low stock, and repair performance.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         DEVELOPER SECTION
+         ======================================================= -->
+
+    <section
+      id="developerSection"
+      class="admin-section"
+    >
+
+      <div class="section-heading">
+
+        <p>
+          Security &amp; System
+        </p>
+
+        <h2>
+          Developer Control Center
+        </h2>
+
+      </div>
+
+
+      <div class="request-card">
+
+        <h3>
+          Role hierarchy
+        </h3>
+
+
+        <div class="card-grid">
+
+          <p>
+            <strong>Developer</strong>
+            <br>
+            Full system access.
+          </p>
+
+
+          <p>
+            <strong>Upper Admin</strong>
+            <br>
+            Business operations.
+          </p>
+
+
+          <p>
+            <strong>Receptionist</strong>
+            <br>
+            Front desk workflow.
+          </p>
+
+
+          <p>
+            <strong>Mechanic</strong>
+            <br>
+            Workshop repairs.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       SCRIPT LOADING
+
+       Script order is important.
+
+       General dependency order:
+       1. Supabase
+       2. Configuration and utilities
+       3. Authentication and dashboard
+       4. Shared UI
+       5. Workspace shell and business synchronization
+       6. Service Request modules
+       7. Inventory and financial modules
+       8. Mechanic parts, labour, board, views, and controller
+       9. Main startup
+       ========================================================= -->
+
+
+  <!-- Supabase browser client -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+  <!-- =======================================================
+       CONFIGURATION AND SHARED UTILITIES
+       ======================================================= -->
+
+  <script src="js/auth-config.js"></script>
+
+  <script src="js/admin-utils.js"></script>
+
+
+  <!-- =======================================================
+       AUTHENTICATION AND DASHBOARD
+       ======================================================= -->
+
+  <script src="js/admin-auth.js"></script>
+
+  <script src="js/admin-dashboard.js"></script>
+
+
+  <!-- =======================================================
+       SHARED UI COMPONENTS
+       ======================================================= -->
+
+  <script src="js/ui/admin-components.js"></script>
+
+  <script src="js/ui/admin-workspace.js"></script>
+
+  <script src="js/ui/admin-tabs.js"></script>
+
+
+  <!-- =======================================================
+       WORKSPACE SHELL AND JOB BUSINESS LOGIC
+       ======================================================= -->
+
+  <!--
+    Supports both:
+    - #workspaceContainer
+    - #jobWorkspaceContainer
+  -->
+  <script src="js/admin-workspace-shell.js"></script>
+
+
+  <!--
+    Shared job status, timeline, financial, refresh, and
+    Supabase RPC helpers.
+
+    This must load before job-card, parts, labour, and job
+    workspace modules that call its functions.
+  -->
+  <script src="js/admin-job-synchronization.js"></script>
+
+
+  <!-- =======================================================
+       SERVICE REQUEST MODULES
+       ======================================================= -->
+
+  <!--
+    Repair-update functions load before the Service Request
+    workspace so its Update and Timeline tabs are available.
+  -->
+  <script src="js/admin-updates.js"></script>
+
+
+  <!--
+    Linked-job loading and creation functions must load before
+    the Service Request workspace renders Linked Jobs.
+  -->
+  <script src="js/admin-job-cards.js"></script>
+
+
+  <!--
+    The Service Request workspace uses the update and linked-job
+    modules loaded above.
+  -->
+  <script src="js/admin-service-request-workspace.js"></script>
+
+
+  <!--
+    Request list rendering and actions load after the workspace
+    command they invoke.
+  -->
+  <script src="js/admin-requests.js"></script>
+
+
+  <!-- =======================================================
+       INVENTORY MODULES
+       ======================================================= -->
+
+  <script src="js/admin-inventory-utils.js"></script>
+
+  <script src="js/admin-inventory-transactions.js"></script>
+
+  <script src="js/admin-inventory-history.js"></script>
+
+  <script src="js/admin-inventory-receiving.js"></script>
+
+  <script src="js/admin-inventory-adjustments.js"></script>
+
+  <script src="js/admin-inventory-bulk.js"></script>
+
+  <script src="js/admin-inventory-items.js"></script>
+
+
+  <!-- =======================================================
+       FINANCIAL MODULES
+       ======================================================= -->
+
+  <script src="js/admin-invoices.js"></script>
+
+  <script src="js/admin-payments.js"></script>
+
+
+  <!-- =======================================================
+       MECHANIC MODULES
+       ======================================================= -->
+
+  <!--
+    Parts and labour must load before the job workspace views
+    render their structured records.
+  -->
+  <script src="js/admin-mechanic-parts.js"></script>
+
+  <script src="js/admin-mechanic-labour.js"></script>
+
+
+  <!--
+    The board supplies:
+    - mechanicBoardJobs
+    - getFullVehicleInfo()
+    - Mechanic Jobs search/filter navigation
+  -->
+  <script src="js/admin-mechanic-board.js"></script>
+
+
+  <!--
+    Workspace view functions load before the controller that
+    calls them.
+  -->
+  <script src="js/admin-job-workspace-views.js"></script>
+
+
+  <!--
+    The controller loads last within the Mechanic group because
+    it coordinates the board, parts, labour, views, workspace
+    shell, and synchronization helpers.
+  -->
+  <script src="js/admin-job-workspace.js"></script>
+
+
+  <!--
+    The former empty js/admin-mechanic.js reference has been
+    removed. It is no longer part of the runtime architecture.
+  -->
+
+
+  <!-- =======================================================
+       MAIN APPLICATION STARTUP
+       ======================================================= -->
+
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

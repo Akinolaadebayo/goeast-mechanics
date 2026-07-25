@@ -1,0 +1,51 @@
+/* =========================================================
+   ADMIN THEME TOKENS
+   File: css/admin-theme.css
+   ========================================================= */
+
+   :root {
+    --color-bg: #f4f6f9;
+    --color-surface: #ffffff;
+    --color-sidebar: #0a2a47;
+    --color-primary: #ef3b44;
+    --color-primary-dark: #d92e37;
+    --color-navy: #082746;
+    --color-text: #0b2545;
+    --color-muted: #6b7280;
+    --color-border: #dfe5ec;
+    --color-success: #2e7d32;
+    --color-warning: #f59e0b;
+    --color-danger: #dc2626;
+    --color-info: #2563eb;
+  
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+  
+    --shadow-sm: 0 4px 12px rgba(0,0,0,.06);
+    --shadow-md: 0 10px 30px rgba(0,0,0,.08);
+  
+    --space-1: 8px;
+    --space-2: 12px;
+    --space-3: 16px;
+    --space-4: 20px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 40px;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+  
+  .hidden {
+    display: none !important;
+  }

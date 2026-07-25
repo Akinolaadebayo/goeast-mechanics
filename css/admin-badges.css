@@ -1,0 +1,56 @@
+/* =========================================================
+   ADMIN BADGES
+   File: css/admin-badges.css
+   ========================================================= */
+
+   .status-badge,
+   .priority-badge {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     padding: 7px 13px;
+     border-radius: 999px;
+     font-size: .75rem;
+     font-weight: 900;
+     text-transform: uppercase;
+   }
+   
+   .status-new {
+     background: #dbeafe;
+     color: #1e40af;
+   }
+   
+   .status-acknowledged {
+     background: #ede9fe;
+     color: #4c1d95;
+   }
+   
+   .status-diagnosing,
+   .status-repairing,
+   .status-testing,
+   .status-waiting_parts {
+     background: #fff7ed;
+     color: #9a3412;
+   }
+   
+   .status-ready_for_pickup,
+   .status-closed {
+     background: #dcfce7;
+     color: #166534;
+   }
+   
+   .status-cancelled {
+     background: #fee2e2;
+     color: #991b1b;
+   }
+   
+   .priority-normal {
+     background: #e0f2fe;
+     color: #075985;
+   }
+   
+   .priority-urgent,
+   .priority-high {
+     background: #fee2e2;
+     color: #991b1b;
+   }

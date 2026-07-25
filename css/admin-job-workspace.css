@@ -1,0 +1,814 @@
+/* =========================================================
+   ADMIN JOB WORKSPACE STYLES
+   File: css/admin-job-workspace.css
+
+   Sprint: Mechanic Job Workspace and Synchronization
+
+   Purpose:
+   Styles linked-job summary cards, mechanic job tabs,
+   job financial summaries, timeline entries, privacy notices,
+   and responsive workspace layouts.
+   ========================================================= */
+
+
+/* =========================================================
+   1. JOB WORKSPACE CONTAINER
+   ========================================================= */
+
+   #jobWorkspaceContainer {
+    width: 100%;
+  }
+  
+  #jobWorkspaceContainer.workspace-container-active {
+    display: block;
+    scroll-margin-top: 24px;
+  }
+  
+  
+  /* =========================================================
+     2. SECTION HEADINGS
+     ========================================================= */
+  
+  .workspace-section-heading small {
+    display: block;
+    max-width: 860px;
+    margin-top: 8px;
+    color: #667085;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+  
+  .workspace-section-kicker,
+  .linked-job-card-label {
+    display: block;
+    margin: 0 0 7px;
+    color: #e63946;
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  
+  
+  /* =========================================================
+     3. LINKED JOBS BLOCK
+     ========================================================= */
+  
+  .linked-job-workspace-block {
+    display: grid;
+    gap: 20px;
+  }
+  
+  .linked-job-heading-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .linked-job-heading-row h4,
+  .linked-job-create-box h4 {
+    margin: 0;
+    color: #0a2342;
+    font-size: 1.25rem;
+  }
+  
+  .linked-job-heading-row p,
+  .linked-job-create-box p {
+    max-width: 760px;
+    margin: 7px 0 0;
+    color: #667085;
+    line-height: 1.55;
+  }
+  
+  .linked-job-cards {
+    display: grid;
+    gap: 16px;
+  }
+  
+  .linked-job-card {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #dce4ee;
+    border-left: 6px solid #1976d2;
+    border-radius: 16px;
+    box-shadow: 0 9px 24px rgba(15, 23, 42, 0.06);
+  }
+  
+  .linked-job-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  
+  .linked-job-card-header h4 {
+    margin: 0;
+    color: #0a2342;
+    font-size: 1.35rem;
+  }
+  
+  .linked-job-card-header p {
+    margin: 5px 0 0;
+    color: #667085;
+  }
+  
+  .linked-job-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(155px, 1fr));
+    gap: 13px;
+  }
+  
+  .linked-job-card-grid > div {
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+  }
+  
+  .linked-job-card-grid span {
+    display: block;
+    margin-bottom: 6px;
+    color: #667085;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  
+  .linked-job-card-grid strong {
+    display: block;
+    color: #0a2342;
+    line-height: 1.4;
+  }
+  
+  .linked-job-card-actions,
+  .linked-job-create-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  
+  
+  /* =========================================================
+     4. CREATE JOB FORM
+     ========================================================= */
+  
+  .linked-job-create-box {
+    padding: 24px;
+    background: #fff8e8;
+    border: 1px solid #ffd38a;
+    border-left: 6px solid #ff9800;
+    border-radius: 16px;
+  }
+  
+  .additional-job-warning {
+    margin-top: 4px;
+  }
+  
+  .create-job-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  
+  .create-job-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #0a2342;
+    font-weight: 900;
+  }
+  
+  .create-job-grid .full-span {
+    grid-column: 1 / -1;
+  }
+  
+  .create-job-grid input,
+  .create-job-grid textarea {
+    width: 100%;
+    padding: 13px 14px;
+    color: #0a2342;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font: inherit;
+  }
+  
+  .create-job-grid textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+  
+  
+  /* =========================================================
+     5. FINANCIAL OWNERSHIP NOTICE
+     ========================================================= */
+  
+  .workspace-financial-notice,
+  .mechanic-update-guidance,
+  .mechanic-customer-privacy-notice {
+    margin-top: 20px;
+    padding: 17px 18px;
+    background: #eef7ff;
+    border: 1px solid #b8dcff;
+    border-left: 5px solid #1976d2;
+    border-radius: 13px;
+  }
+  
+  .workspace-financial-notice strong,
+  .mechanic-update-guidance strong,
+  .mechanic-customer-privacy-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #0a2342;
+  }
+  
+  .workspace-financial-notice p,
+  .mechanic-update-guidance p,
+  .mechanic-customer-privacy-notice p {
+    margin: 0;
+    color: #475467;
+    line-height: 1.55;
+  }
+  
+  .mechanic-customer-privacy-notice {
+    background: #fff8e8;
+    border-color: #ffd38a;
+    border-left-color: #ff9800;
+  }
+  
+  
+  /* =========================================================
+     6. MECHANIC JOB CONTEXT
+     ========================================================= */
+  
+  .mechanic-job-workspace-context {
+    display: grid;
+    gap: 15px;
+  }
+  
+  .mechanic-job-workspace-context .admin-action-toolbar {
+    margin-bottom: 0;
+  }
+  
+  
+  /* =========================================================
+     7. JOB UPDATE FORM
+     ========================================================= */
+  
+  .mechanic-job-update-form {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #dce4ee;
+    border-left: 6px solid #0a2342;
+    border-radius: 16px;
+  }
+  
+  .mechanic-job-update-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  
+  .mechanic-job-update-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #0a2342;
+    font-weight: 900;
+  }
+  
+  .mechanic-job-update-grid .full-span {
+    grid-column: 1 / -1;
+  }
+  
+  .mechanic-job-update-grid input,
+  .mechanic-job-update-grid select,
+  .mechanic-job-update-grid textarea {
+    width: 100%;
+    padding: 13px 14px;
+    color: #0a2342;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font: inherit;
+  }
+  
+  .mechanic-job-update-grid textarea {
+    min-height: 125px;
+    resize: vertical;
+  }
+  
+  .mechanic-update-guidance {
+    margin-top: 18px;
+  }
+  
+  
+  /* =========================================================
+     8. PARTS AND LABOUR LAYOUT
+     ========================================================= */
+  
+  .mechanic-parts-labour-tab {
+    display: grid;
+    gap: 24px;
+  }
+  
+  .mechanic-parts-workspace,
+  .mechanic-labour-workspace {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #dce4ee;
+    border-radius: 15px;
+  }
+  
+  .mechanic-job-cost-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(170px, 1fr));
+    gap: 14px;
+  }
+  
+  .mechanic-job-cost-summary > div {
+    padding: 18px;
+    background: #f8fafc;
+    border: 1px solid #dce4ee;
+    border-radius: 14px;
+  }
+  
+  .mechanic-job-cost-summary span {
+    display: block;
+    margin-bottom: 7px;
+    color: #667085;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  
+  .mechanic-job-cost-summary strong {
+    color: #0a2342;
+    font-size: 1.3rem;
+  }
+  
+  .mechanic-job-cost-total {
+    background: #eef4fb !important;
+    border-color: #0a2342 !important;
+  }
+  
+  
+  /* =========================================================
+     9. TIMELINE
+     ========================================================= */
+  
+  .repair-timeline-list {
+    display: grid;
+    gap: 14px;
+  }
+  
+  .repair-timeline-item {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    gap: 14px;
+    padding: 17px;
+    background: #f8fafc;
+    border: 1px solid #dce4ee;
+    border-radius: 14px;
+  }
+  
+  .repair-timeline-marker {
+    width: 12px;
+    height: 12px;
+    margin-top: 5px;
+    background: #e63946;
+    border-radius: 999px;
+  }
+  
+  .repair-timeline-content {
+    min-width: 0;
+  }
+  
+  .repair-timeline-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .repair-timeline-heading strong {
+    color: #0a2342;
+    text-transform: capitalize;
+  }
+  
+  .repair-timeline-heading small {
+    color: #667085;
+    text-align: right;
+  }
+  
+  .repair-timeline-content p {
+    margin: 8px 0 0;
+    color: #475467;
+    line-height: 1.55;
+  }
+  
+  .repair-timeline-job-reference {
+    display: inline-flex;
+    margin-top: 8px;
+    padding: 5px 9px;
+    color: #1d4ed8;
+    background: #dbeafe;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 900;
+  }
+  
+  
+  /* =========================================================
+     10. RESPONSIVE LAYOUT
+     ========================================================= */
+  
+  @media (max-width: 1120px) {
+    .linked-job-card-grid,
+    .create-job-grid {
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .linked-job-heading-row,
+    .linked-job-card-header {
+      flex-direction: column;
+    }
+  
+    .mechanic-job-update-grid,
+    .mechanic-job-cost-summary {
+      grid-template-columns: 1fr;
+    }
+  
+    .linked-job-card-actions,
+    .linked-job-create-actions {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+  }
+  
+  @media (max-width: 650px) {
+    .linked-job-card-grid,
+    .create-job-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .linked-job-card-actions,
+    .linked-job-create-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .linked-job-card-actions button,
+    .linked-job-create-actions button {
+      width: 100%;
+    }
+  
+    .repair-timeline-heading {
+      flex-direction: column;
+    }
+  
+    .repair-timeline-heading small {
+      text-align: left;
+    }
+  }
+/* =========================================================
+   MECHANIC BOARD FINAL COLUMN SEPARATION
+   ========================================================= */
+
+   .mechanic-jobs-table th.mechanic-job-subtotal-heading {
+    min-width: 175px;
+    line-height: 1.15;
+    white-space: normal;
+  }
+  
+  .mechanic-jobs-table th.mechanic-job-subtotal-heading span {
+    display: block;
+  }
+  
+  .mechanic-jobs-table th.mechanic-job-action-heading,
+  .mechanic-jobs-table td:nth-child(8) {
+    min-width: 155px;
+    padding-left: 24px;
+    text-align: center;
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  
+  .mechanic-jobs-table td:nth-child(8) {
+    border-left-color: #e2e8f0;
+  }
+  
+  .mechanic-jobs-table td:nth-child(8) button {
+    width: 128px;
+    max-width: 100%;
+  }
+  /* =========================================================
+   SERVICE REQUEST VISIBILITY CONTROL
+   Makes the internal/customer visibility choice prominent.
+   ========================================================= */
+
+.service-request-visibility-control {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 240px;
+  padding: 14px 16px;
+  border: 1px solid #d7e0ec;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.service-request-visibility-control input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+
+.service-request-visibility-control span {
+  display: grid;
+  gap: 4px;
+}
+
+.service-request-visibility-control strong {
+  color: #0b2949;
+}
+
+.service-request-visibility-control small {
+  color: #64748b;
+  line-height: 1.4;
+}
+/* =========================================================
+   SERVICE REQUEST REFERENCE COLUMN
+   Adds a permanent REQ identifier without relying on changing
+   row numbers.
+   ========================================================= */
+
+   .admin-data-table.service-requests-table {
+    width: 100%;
+    min-width: 1380px;
+    table-layout: fixed;
+  }
+  
+  /* Request */
+  .admin-data-table.service-requests-table th:nth-child(1),
+  .admin-data-table.service-requests-table td:nth-child(1) {
+    width: 100px;
+  }
+  
+  /* Customer */
+  .admin-data-table.service-requests-table th:nth-child(2),
+  .admin-data-table.service-requests-table td:nth-child(2) {
+    width: 230px;
+  }
+  
+  /* Phone */
+  .admin-data-table.service-requests-table th:nth-child(3),
+  .admin-data-table.service-requests-table td:nth-child(3) {
+    width: 135px;
+  }
+  
+  /* Make */
+  .admin-data-table.service-requests-table th:nth-child(4),
+  .admin-data-table.service-requests-table td:nth-child(4) {
+    width: 95px;
+  }
+  
+  /* Model */
+  .admin-data-table.service-requests-table th:nth-child(5),
+  .admin-data-table.service-requests-table td:nth-child(5) {
+    width: 105px;
+  }
+  
+  /* Year */
+  .admin-data-table.service-requests-table th:nth-child(6),
+  .admin-data-table.service-requests-table td:nth-child(6) {
+    width: 70px;
+  }
+  
+  /* Status */
+  .admin-data-table.service-requests-table th:nth-child(7),
+  .admin-data-table.service-requests-table td:nth-child(7) {
+    width: 125px;
+  }
+  
+  /* Priority */
+  .admin-data-table.service-requests-table th:nth-child(8),
+  .admin-data-table.service-requests-table td:nth-child(8) {
+    width: 105px;
+  }
+  
+  /* Estimate */
+  .admin-data-table.service-requests-table th:nth-child(9),
+  .admin-data-table.service-requests-table td:nth-child(9) {
+    width: 100px;
+  }
+  
+  /* Submitted */
+  .admin-data-table.service-requests-table th:nth-child(10),
+  .admin-data-table.service-requests-table td:nth-child(10) {
+    width: 170px;
+  }
+  
+  /* Action */
+  .admin-data-table.service-requests-table th:nth-child(11),
+  .admin-data-table.service-requests-table td:nth-child(11) {
+    width: 90px;
+    text-align: center;
+  }
+  
+  .service-request-reference-cell strong {
+    color: #0a2342;
+    white-space: nowrap;
+  }
+  
+  .service-request-reference-cell small {
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+ /* =========================================================
+   SERVICE REQUEST UPDATE FORM — FINAL LAYOUT
+
+   Desktop:
+   - Four administrative controls across the first row
+   - Update message across the full width
+   - Visibility control on its own compact row
+   - Save button aligned safely at the bottom-right
+
+   Responsive:
+   - Two columns on medium screens
+   - One column on narrow screens
+   ========================================================= */
+
+.repair-update-box {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+/* Standard form fields */
+.repair-update-box > label:not(.service-request-visibility-control) {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  align-content: start;
+}
+
+.repair-update-box input:not([type="checkbox"]),
+.repair-update-box select,
+.repair-update-box textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Full-width Service Request message */
+.repair-update-box .wide-field {
+  grid-column: 1 / -1;
+}
+
+.repair-update-box .wide-field textarea {
+  width: 100%;
+  min-height: 125px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   VISIBILITY CONTROL
+
+   Overrides older checkbox-line rules that can push the
+   checkbox and description apart.
+   ========================================================= */
+
+.repair-update-box .service-request-visibility-control {
+  grid-column: 1 / -1;
+
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 4px;
+
+  align-items: start;
+  justify-content: initial !important;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+
+  margin: 0;
+  padding: 16px 18px;
+
+  box-sizing: border-box;
+
+  background: #f8fafc;
+  border: 1px solid #d7e0ec;
+  border-radius: 12px;
+}
+
+.repair-update-box .service-request-visibility-control input {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+
+  width: 18px !important;
+  height: 18px !important;
+
+  margin: 2px 0 0;
+  padding: 0;
+
+  flex: none;
+}
+
+.repair-update-box .service-request-visibility-control span {
+  grid-column: 2;
+
+  display: grid;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.repair-update-box .service-request-visibility-control strong {
+  display: block;
+  color: #0a2342;
+  line-height: 1.35;
+}
+
+.repair-update-box .service-request-visibility-control small {
+  display: block;
+  max-width: 720px;
+
+  color: #64748b;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   SAVE ACTION
+   ========================================================= */
+
+.repair-update-box .save-repair-update-btn {
+  grid-column: 1 / -1;
+
+  justify-self: end;
+  align-self: auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: auto;
+  min-width: 190px;
+  min-height: 48px;
+  height: auto;
+
+  padding: 13px 24px;
+}
+
+/* =========================================================
+   MEDIUM DASHBOARD WIDTHS
+   ========================================================= */
+
+@media (max-width: 1150px) {
+  .repair-update-box {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .repair-update-box .wide-field,
+  .repair-update-box .service-request-visibility-control,
+  .repair-update-box .save-repair-update-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+/* =========================================================
+   MOBILE AND NARROW SCREENS
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .repair-update-box {
+    grid-template-columns: 1fr;
+  }
+
+  .repair-update-box > label,
+  .repair-update-box .wide-field,
+  .repair-update-box .service-request-visibility-control,
+  .repair-update-box .save-repair-update-btn {
+    grid-column: 1;
+  }
+
+  .repair-update-box .save-repair-update-btn {
+    justify-self: stretch;
+    width: 100%;
+  }
+}
