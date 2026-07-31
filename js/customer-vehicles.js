@@ -1,557 +1,560 @@
 /* =========================================================
-   ADMIN MECHANIC JOB BOARD MODULE
-   File: js/admin-mechanic-board.js
+   CUSTOMER VEHICLES MODULE
+   File: js/customer-vehicles.js
 
    Purpose:
-   Professional workshop board for mechanics.
+   - Loads vehicles belonging to the authenticated customer.
+   - Allows a customer to register a vehicle.
+   - Displays the customer's active vehicles.
+   - Allows a customer to remove a vehicle from the garage
+     by changing its status to inactive.
 
-   Privacy Rule:
-   Mechanics only see repair-relevant information:
-   - Vehicle details
-   - Complaint
-   - Bay
-   - Assigned mechanic
-   - Repair workflow fields
-
-   Mechanics do NOT see customer name, email, or phone.
+   Security:
+   - Every query is restricted by customer_id.
+   - Supabase Row Level Security remains the final authority.
+   - No service-role or secret key is used in this browser file.
    ========================================================= */
 
-   let mechanicBoardJobs = [];
-   let mechanicBoardOpenJobId = null;
-   let mechanicBoardFilter = "active";
-   let mechanicBoardSearch = "";
-   
-   const mechanicJobsContainer = document.getElementById("mechanicJobsList");
-   
-   /* =========================================================
-      LOAD MECHANIC JOBS
-   
-      This loads job cards and joins vehicle details from vehicles.
-      ========================================================= */
-   
-   async function loadMechanicBoard() {
-     if (!mechanicJobsContainer) return;
-   
-     mechanicJobsContainer.innerHTML = `<p class="empty-message">Loading mechanic jobs...</p>`;
-   
-     if (!["developer", "upper_admin", "mechanic"].includes(currentProfile.role)) {
-       mechanicJobsContainer.innerHTML = `
-         <p class="empty-message">
-           Mechanic Jobs are reserved for mechanics and authorized staff.
-         </p>
-       `;
-       return;
-     }
-   
-     const { data, error } = await supabaseClient
-       .from("job_cards")
-       .select(`
-         id,
-         service_request_id,
-         vehicle_id,
-         vehicle,
-         job_status,
-         assigned_mechanic,
-         repair_bay,
-         appointment_date,
-         estimated_completion,
-         complaint,
-         diagnosis,
-         repairs_performed,
-         parts_used,
-         labor_notes,
-         parts_notes,
-         vehicles (
-           year,
-           make,
-           model,
-           trim,
-           license_plate,
-           vin,
-           mileage,
-           notes
-         )
-       `)
-       .order("id", { ascending: false });
-   
-     if (error) {
-       mechanicJobsContainer.innerHTML = `
-         <p class="empty-message">
-           Could not load mechanic jobs: ${escapeHtml(error.message)}
-         </p>
-       `;
-       return;
-     }
-   
-     mechanicBoardJobs = data || [];
-     renderMechanicBoard();
+
+/* =========================================================
+   1. PAGE ELEMENT REFERENCES
+   ========================================================= */
+
+   const customerVehiclesContainer =
+   document.getElementById("customerVehicles");
+ 
+ const customerVehicleForm =
+   document.getElementById("vehicleForm");
+ 
+ const customerVehicleYear =
+   document.getElementById("vehicleYear");
+ 
+ const customerVehicleMake =
+   document.getElementById("vehicleMake");
+ 
+ const customerVehicleModel =
+   document.getElementById("vehicleModel");
+ 
+ const customerVehicleTrim =
+   document.getElementById("vehicleTrim");
+ 
+ const customerVehiclePlate =
+   document.getElementById("vehiclePlate");
+ 
+ const customerVehicleVin =
+   document.getElementById("vehicleVin");
+ 
+ const customerVehicleMileage =
+   document.getElementById("vehicleMileage");
+ 
+ const customerVehicleNotes =
+   document.getElementById("vehicleNotes");
+ 
+ 
+ /* =========================================================
+    2. MODULE STATE
+    ========================================================= */
+ 
+ let customerVehicleRecords = [];
+ let customerVehicleSaving = false;
+ 
+ 
+ /* =========================================================
+    3. SAFE TEXT HELPERS
+    ========================================================= */
+ 
+ function escapeCustomerVehicleHtml(value) {
+   return String(value ?? "")
+     .replaceAll("&", "&amp;")
+     .replaceAll("<", "&lt;")
+     .replaceAll(">", "&gt;")
+     .replaceAll('"', "&quot;")
+     .replaceAll("'", "&#039;");
+ }
+ 
+ function cleanCustomerVehicleValue(value) {
+   const cleanedValue = String(value ?? "").trim();
+ 
+   return cleanedValue || null;
+ }
+ 
+ function formatCustomerVehicleDate(value) {
+   if (!value) return "Not available";
+ 
+   const date = new Date(value);
+ 
+   if (Number.isNaN(date.getTime())) {
+     return "Not available";
    }
-   
-   /* =========================================================
-      FILTER AND SEARCH JOBS
-      ========================================================= */
-   
-   function getFilteredMechanicJobs() {
-     return mechanicBoardJobs.filter((job) => {
-       const status = job.job_status || "created";
-       const vehicleInfo = getFullVehicleInfo(job);
-   
-       let matchesFilter = true;
-   
-       if (mechanicBoardFilter === "active") {
-         matchesFilter = !["closed", "cancelled"].includes(status);
-       }
-   
-       if (mechanicBoardFilter === "closed") {
-         matchesFilter = ["closed", "cancelled"].includes(status);
-       }
-   
-       const searchableText = `
-         job-${job.id || ""}
-         request-${job.service_request_id || ""}
-         ${vehicleInfo.title || ""}
-         ${vehicleInfo.plate || ""}
-         ${vehicleInfo.vin || ""}
-         ${job.assigned_mechanic || ""}
-         ${job.repair_bay || ""}
-         ${job.complaint || ""}
-         ${status}
-       `.toLowerCase();
-   
-       return matchesFilter && searchableText.includes(mechanicBoardSearch.toLowerCase());
-     });
+ 
+   return date.toLocaleDateString("en-CA", {
+     year: "numeric",
+     month: "short",
+     day: "numeric",
+   });
+ }
+ 
+ 
+ /* =========================================================
+    4. AUTHENTICATED CUSTOMER HELPER
+    ========================================================= */
+ 
+ function getAuthenticatedCustomerId() {
+   /*
+     currentUser is established by js/customer.js before the
+     dashboard modules are loaded.
+   */
+ 
+   if (
+     typeof currentUser === "undefined" ||
+     !currentUser ||
+     !currentUser.id
+   ) {
+     return null;
    }
-   
-   /* =========================================================
-      RENDER MECHANIC BOARD
-      ========================================================= */
-   
-   function renderMechanicBoard() {
-     if (!mechanicJobsContainer) return;
-   
-     const filteredJobs = getFilteredMechanicJobs();
-   
-     mechanicJobsContainer.innerHTML = `
-       <div class="mechanic-board-toolbar">
-         <div class="mechanic-search-box">
-           <label for="mechanicJobSearch">Search Jobs</label>
-           <input
-             type="text"
-             id="mechanicJobSearch"
-             placeholder="Search job, vehicle, plate, VIN, complaint, mechanic, bay..."
-             value="${escapeHtml(mechanicBoardSearch)}"
+ 
+   return currentUser.id;
+ }
+ 
+ 
+ /* =========================================================
+    5. VEHICLE DISPLAY HELPERS
+    ========================================================= */
+ 
+ function getCustomerVehicleTitle(vehicle) {
+   const titleParts = [
+     vehicle.year,
+     vehicle.make,
+     vehicle.model,
+   ].filter(Boolean);
+ 
+   return titleParts.join(" ") || "Registered Vehicle";
+ }
+ 
+ function getCustomerVehicleSubtitle(vehicle) {
+   const subtitleParts = [];
+ 
+   if (vehicle.trim) {
+     subtitleParts.push(vehicle.trim);
+   }
+ 
+   if (vehicle.license_plate) {
+     subtitleParts.push(
+       `Plate: ${String(vehicle.license_plate).toUpperCase()}`
+     );
+   }
+ 
+   return subtitleParts.join(" • ") || "Vehicle record";
+ }
+ 
+ 
+ /* =========================================================
+    6. LOAD CUSTOMER VEHICLES
+    ========================================================= */
+ 
+ async function loadCustomerVehicles() {
+   if (!customerVehiclesContainer) return;
+ 
+   const customerId = getAuthenticatedCustomerId();
+ 
+   if (!customerId) {
+     customerVehiclesContainer.innerHTML = `
+       <p class="empty-message">
+         Your customer session is not available. Please sign in again.
+       </p>
+     `;
+ 
+     return;
+   }
+ 
+   customerVehiclesContainer.innerHTML = `
+     <p class="empty-message">Loading vehicles...</p>
+   `;
+ 
+   const { data, error } = await supabaseClient
+     .from("vehicles")
+     .select(`
+       id,
+       customer_id,
+       year,
+       make,
+       model,
+       trim,
+       vin,
+       license_plate,
+       color,
+       mileage,
+       notes,
+       status,
+       created_at,
+       updated_at
+     `)
+     .eq("customer_id", customerId)
+     .order("created_at", { ascending: false });
+ 
+   if (error) {
+     console.error("Customer vehicle loading error:", error);
+ 
+     customerVehiclesContainer.innerHTML = `
+       <p class="empty-message">
+         Could not load your vehicles:
+         ${escapeCustomerVehicleHtml(error.message)}
+       </p>
+     `;
+ 
+     return;
+   }
+ 
+   customerVehicleRecords = (data || []).filter((vehicle) => {
+     return String(vehicle.status || "active").toLowerCase() !== "inactive";
+   });
+ 
+   renderCustomerVehicles();
+ }
+ 
+ 
+ /* =========================================================
+    7. RENDER CUSTOMER VEHICLES
+    ========================================================= */
+ 
+ function renderCustomerVehicles() {
+   if (!customerVehiclesContainer) return;
+ 
+   if (customerVehicleRecords.length === 0) {
+     customerVehiclesContainer.innerHTML = `
+       <div class="empty-message">
+         <strong>No vehicles registered yet.</strong>
+         <p>
+           Complete the form above to add your first vehicle.
+         </p>
+       </div>
+     `;
+ 
+     return;
+   }
+ 
+   customerVehiclesContainer.innerHTML =
+     customerVehicleRecords
+       .map((vehicle) => {
+         const title = getCustomerVehicleTitle(vehicle);
+         const subtitle = getCustomerVehicleSubtitle(vehicle);
+ 
+         return `
+           <article
+             class="request-card customer-vehicle-card"
+             data-customer-vehicle-id="${escapeCustomerVehicleHtml(vehicle.id)}"
            >
-         </div>
-   
-         <div class="mechanic-filter-box">
-           <label for="mechanicJobFilter">Job View</label>
-           <select id="mechanicJobFilter">
-             <option value="active" ${mechanicBoardFilter === "active" ? "selected" : ""}>Active Jobs</option>
-             <option value="closed" ${mechanicBoardFilter === "closed" ? "selected" : ""}>Closed / Cancelled Jobs</option>
-             <option value="all" ${mechanicBoardFilter === "all" ? "selected" : ""}>All Jobs</option>
-           </select>
-         </div>
-       </div>
-   
-       <div id="mechanicBoardContent"></div>
-     `;
-   
-     const content = document.getElementById("mechanicBoardContent");
-   
-     if (filteredJobs.length === 0) {
-       content.innerHTML = `
-         <div class="module-card">
-           <h3>No jobs found</h3>
-           <p>No mechanic jobs match your selected filter or search.</p>
-         </div>
-       `;
-   
-       bindMechanicToolbar();
-       return;
-     }
-   
-     content.innerHTML = `
-       <div class="admin-requests-table-wrap">
-         <table class="admin-requests-table">
-           <thead>
-             <tr>
-               <th>Job</th>
-               <th>Vehicle</th>
-               <th>Complaint</th>
-               <th>Mechanic</th>
-               <th>Bay</th>
-               <th>Status</th>
-               <th>Appointment</th>
-               <th>Action</th>
-             </tr>
-           </thead>
-           <tbody id="mechanicJobsTableBody"></tbody>
-         </table>
-       </div>
-     `;
-   
-     const tableBody = document.getElementById("mechanicJobsTableBody");
-   
-     filteredJobs.forEach((job) => {
-       const status = job.job_status || "created";
-       const vehicleInfo = getFullVehicleInfo(job);
-       const isOpen = String(mechanicBoardOpenJobId) === String(job.id);
-   
-       const row = document.createElement("tr");
-   
-       row.innerHTML = `
-         <td>
-           <strong>JOB-${job.id}</strong>
-           <small>Request: ${safeText(job.service_request_id, "-")}</small>
-         </td>
-   
-         <td>
-           <strong>${safeText(vehicleInfo.title, "Vehicle")}</strong>
-           ${vehicleInfo.plate ? `<small>Plate: ${safeText(vehicleInfo.plate)}</small>` : ""}
-         </td>
-   
-         <td>
-           <strong>${safeText(shortText(job.complaint, 55), "No complaint")}</strong>
-         </td>
-   
-         <td>${safeText(job.assigned_mechanic, "Unassigned")}</td>
-         <td>${safeText(job.repair_bay, "-")}</td>
-   
-         <td>
-           <span class="status-badge status-${escapeHtml(status)}">
-             ${escapeHtml(status.replaceAll("_", " "))}
-           </span>
-         </td>
-   
-         <td>${formatDate(job.appointment_date)}</td>
-   
-         <td>
-           <button class="table-action-btn" data-mechanic-job-toggle="${job.id}">
-             ${isOpen ? "Close" : "Open"}
-           </button>
-         </td>
-       `;
-   
-       tableBody.appendChild(row);
-   
-       if (isOpen) {
-         const detailRow = document.createElement("tr");
-         detailRow.className = "admin-request-details-row";
-   
-         detailRow.innerHTML = `
-           <td colspan="8">
-             ${renderMechanicJobDetails(job)}
-           </td>
-         `;
-   
-         tableBody.appendChild(detailRow);
-       }
-     });
-   
-     bindMechanicToolbar();
-     bindMechanicJobButtons();
-   }
-   
-   /* =========================================================
-      RENDER EXPANDED JOB CARD
-      ========================================================= */
-   
-   function renderMechanicJobDetails(job) {
-     const status = job.job_status || "created";
-     const vehicleInfo = getFullVehicleInfo(job);
-     const isClosed = ["closed", "cancelled"].includes(status);
-   
-     return `
-       <div class="admin-request-detail-panel">
-   
-         <div class="admin-detail-header">
-           <div>
-             <p class="admin-card-label">Workshop Job Card</p>
-             <h3>JOB-${job.id} • ${safeText(vehicleInfo.title, "Vehicle")}</h3>
-             ${vehicleInfo.plate ? `<p class="vehicle-plate">Plate: ${safeText(vehicleInfo.plate)}</p>` : ""}
-           </div>
-   
-           <span class="status-badge status-${escapeHtml(status)}">
-             ${escapeHtml(status.replaceAll("_", " "))}
-           </span>
-         </div>
-   
-         <div class="card-message">
-           <strong>Customer Complaint</strong>
-           <p>${safeText(job.complaint, "No complaint provided.")}</p>
-         </div>
-   
-         <div class="admin-request-grid">
-           <div><span>Year</span><strong>${safeText(vehicleInfo.year, "-")}</strong></div>
-           <div><span>Make</span><strong>${safeText(vehicleInfo.make, "-")}</strong></div>
-           <div><span>Model</span><strong>${safeText(vehicleInfo.model, "-")}</strong></div>
-           <div><span>Trim</span><strong>${safeText(vehicleInfo.trim, "-")}</strong></div>
-           <div><span>Plate</span><strong>${safeText(vehicleInfo.plate, "-")}</strong></div>
-           <div><span>VIN</span><strong>${safeText(vehicleInfo.vin, "-")}</strong></div>
-           <div><span>Mileage</span><strong>${safeText(vehicleInfo.mileage, "-")}</strong></div>
-           <div><span>Repair Bay</span><strong>${safeText(job.repair_bay, "-")}</strong></div>
-           <div><span>Assigned Mechanic</span><strong>${safeText(job.assigned_mechanic, "Unassigned")}</strong></div>
-           <div><span>Appointment</span><strong>${formatDate(job.appointment_date)}</strong></div>
-           <div><span>Estimated Completion</span><strong>${formatDate(job.estimated_completion)}</strong></div>
-         </div>
-   
-         <div class="card-notes">
-           <strong>Vehicle Notes</strong>
-           <p>${safeText(vehicleInfo.notes, "No vehicle notes added.")}</p>
-         </div>
-   
-         ${
-           isClosed
-             ? `
-               <div class="card-notes">
-                 <strong>Closed Job Record</strong>
-                 <p>This job is closed/cancelled and is kept for history and reporting.</p>
+             <div class="card-top">
+               <div>
+                 <h3>${escapeCustomerVehicleHtml(title)}</h3>
+ 
+                 <p>
+                   ${escapeCustomerVehicleHtml(subtitle)}
+                 </p>
                </div>
-             `
-             : ""
-         }
-   
-         <div class="mechanic-workspace-grid">
-           <label>
-             Job Status
-             <select class="mechanic-job-status" data-id="${job.id}">
-               ${renderMechanicJobStatusOptions(status)}
-             </select>
-           </label>
-   
-           <label>
-             Diagnosis
-             <textarea class="mechanic-diagnosis" data-id="${job.id}" placeholder="Diagnosis notes">${safeText(job.diagnosis, "")}</textarea>
-           </label>
-   
-           <label>
-             Repairs Performed
-             <textarea class="mechanic-repairs" data-id="${job.id}" placeholder="Repairs performed">${safeText(job.repairs_performed, "")}</textarea>
-           </label>
-   
-           <label>
-             Parts Used
-             <textarea class="mechanic-parts" data-id="${job.id}" placeholder="Parts used">${safeText(job.parts_used, "")}</textarea>
-           </label>
-   
-           <label>
-             Labour Notes
-             <textarea class="mechanic-labor" data-id="${job.id}" placeholder="Labour notes">${safeText(job.labor_notes, "")}</textarea>
-           </label>
-   
-           <label>
-             Customer Visible Update
-             <textarea class="mechanic-public-update" data-id="${job.id}" placeholder="Example: Vehicle inspection completed. Repair is in progress."></textarea>
-           </label>
-         </div>
-   
-         <button class="save-mechanic-job-btn" data-id="${job.id}">
-           Save Mechanic Job
-         </button>
-   
-       </div>
-     `;
-   }
-   
-   /* =========================================================
-      SAVE JOB
-      ========================================================= */
-   
-   async function saveMechanicJob(jobId, button) {
-     const job = mechanicBoardJobs.find((item) => String(item.id) === String(jobId));
-   
-     if (!job) {
-       showAdminToast("Could not find this mechanic job.", "error");
-       return;
-     }
-   
-     const statusValue = document.querySelector(`.mechanic-job-status[data-id="${jobId}"]`).value;
-     const diagnosisValue = document.querySelector(`.mechanic-diagnosis[data-id="${jobId}"]`).value.trim();
-     const repairsValue = document.querySelector(`.mechanic-repairs[data-id="${jobId}"]`).value.trim();
-     const partsValue = document.querySelector(`.mechanic-parts[data-id="${jobId}"]`).value.trim();
-     const laborValue = document.querySelector(`.mechanic-labor[data-id="${jobId}"]`).value.trim();
-     const publicUpdateValue = document.querySelector(`.mechanic-public-update[data-id="${jobId}"]`).value.trim();
-   
-     button.disabled = true;
-     button.textContent = "Saving...";
-   
-     const { error: jobError } = await supabaseClient
-       .from("job_cards")
-       .update({
-         job_status: statusValue,
-         diagnosis: diagnosisValue,
-         repairs_performed: repairsValue,
-         parts_used: partsValue,
-         labor_notes: laborValue
+ 
+               <span class="status-badge status-active">
+                 Active
+               </span>
+             </div>
+ 
+             <div class="card-grid">
+               <p>
+                 <strong>Year</strong><br>
+                 ${escapeCustomerVehicleHtml(vehicle.year || "Not provided")}
+               </p>
+ 
+               <p>
+                 <strong>Make</strong><br>
+                 ${escapeCustomerVehicleHtml(vehicle.make || "Not provided")}
+               </p>
+ 
+               <p>
+                 <strong>Model</strong><br>
+                 ${escapeCustomerVehicleHtml(vehicle.model || "Not provided")}
+               </p>
+ 
+               <p>
+                 <strong>Trim</strong><br>
+                 ${escapeCustomerVehicleHtml(vehicle.trim || "Not provided")}
+               </p>
+ 
+               <p>
+                 <strong>License Plate</strong><br>
+                 ${escapeCustomerVehicleHtml(
+                   vehicle.license_plate
+                     ? String(vehicle.license_plate).toUpperCase()
+                     : "Not provided"
+                 )}
+               </p>
+ 
+               <p>
+                 <strong>VIN</strong><br>
+                 ${escapeCustomerVehicleHtml(
+                   vehicle.vin
+                     ? String(vehicle.vin).toUpperCase()
+                     : "Not provided"
+                 )}
+               </p>
+ 
+               <p>
+                 <strong>Mileage</strong><br>
+                 ${escapeCustomerVehicleHtml(
+                   vehicle.mileage || "Not provided"
+                 )}
+               </p>
+ 
+               <p>
+                 <strong>Added</strong><br>
+                 ${escapeCustomerVehicleHtml(
+                   formatCustomerVehicleDate(vehicle.created_at)
+                 )}
+               </p>
+             </div>
+ 
+             ${
+               vehicle.notes
+                 ? `
+                   <div class="card-notes">
+                     <strong>Vehicle Notes</strong>
+ 
+                     <p>
+                       ${escapeCustomerVehicleHtml(vehicle.notes)}
+                     </p>
+                   </div>
+                 `
+                 : ""
+             }
+ 
+             <div class="card-actions">
+               <button
+                 type="button"
+                 class="table-action-btn danger"
+                 data-remove-customer-vehicle="${escapeCustomerVehicleHtml(
+                   vehicle.id
+                 )}"
+               >
+                 Remove from Garage
+               </button>
+             </div>
+           </article>
+         `;
        })
-       .eq("id", jobId);
-   
-     if (jobError) {
-       showAdminToast("Could not save mechanic job: " + jobError.message, "error");
-       button.disabled = false;
-       button.textContent = "Save Mechanic Job";
-       return;
+       .join("");
+ }
+ 
+ 
+ /* =========================================================
+    8. CREATE CUSTOMER VEHICLE
+    ========================================================= */
+ 
+ async function saveCustomerVehicle(event) {
+   event.preventDefault();
+ 
+   if (customerVehicleSaving) return;
+ 
+   const customerId = getAuthenticatedCustomerId();
+ 
+   if (!customerId) {
+     alert("Your customer session has expired. Please sign in again.");
+     return;
+   }
+ 
+   const model = cleanCustomerVehicleValue(
+     customerVehicleModel?.value
+   );
+ 
+   if (!model) {
+     alert("Please enter the vehicle model.");
+     customerVehicleModel?.focus();
+     return;
+   }
+ 
+   const payload = {
+     customer_id: customerId,
+ 
+     year: cleanCustomerVehicleValue(
+       customerVehicleYear?.value
+     ),
+ 
+     make: cleanCustomerVehicleValue(
+       customerVehicleMake?.value
+     ),
+ 
+     model,
+ 
+     trim: cleanCustomerVehicleValue(
+       customerVehicleTrim?.value
+     ),
+ 
+     license_plate: cleanCustomerVehicleValue(
+       customerVehiclePlate?.value
+     )
+       ? customerVehiclePlate.value.trim().toUpperCase()
+       : null,
+ 
+     vin: cleanCustomerVehicleValue(
+       customerVehicleVin?.value
+     )
+       ? customerVehicleVin.value.trim().toUpperCase()
+       : null,
+ 
+     mileage: cleanCustomerVehicleValue(
+       customerVehicleMileage?.value
+     ),
+ 
+     notes: cleanCustomerVehicleValue(
+       customerVehicleNotes?.value
+     ),
+ 
+     status: "active",
+     updated_at: new Date().toISOString(),
+   };
+ 
+   const submitButton =
+     customerVehicleForm?.querySelector('button[type="submit"]');
+ 
+   customerVehicleSaving = true;
+ 
+   if (submitButton) {
+     submitButton.disabled = true;
+     submitButton.textContent = "Adding Vehicle...";
+   }
+ 
+   try {
+     const { error } = await supabaseClient
+       .from("vehicles")
+       .insert([payload]);
+ 
+     if (error) {
+       throw error;
      }
-   
-     if (job.service_request_id) {
-       await supabaseClient
-         .from("service_requests")
-         .update({ status: statusValue })
-         .eq("id", job.service_request_id);
-   
-       if (publicUpdateValue) {
-         await supabaseClient.rpc("save_repair_update", {
-           p_service_request_id: Number(job.service_request_id),
-           p_status: statusValue,
-           p_message: publicUpdateValue,
-           p_internal_only: false
-         });
-       }
-     }
-   
-     mechanicBoardOpenJobId = jobId;
-   
-     button.disabled = false;
-     button.textContent = "Save Mechanic Job";
-   
-     showAdminToast("Mechanic job saved successfully.", "success");
-   
-     await loadMechanicBoard();
-   
-     const refreshedUpdateInput = document.querySelector(`.mechanic-public-update[data-id="${jobId}"]`);
-   
-     if (refreshedUpdateInput && mechanicBoardFilter !== "closed") {
-       refreshedUpdateInput.value = "";
-       refreshedUpdateInput.focus();
-     }
-   
-     if (typeof loadServiceRequests === "function") {
-       await loadServiceRequests();
+ 
+     customerVehicleForm.reset();
+ 
+     await loadCustomerVehicles();
+ 
+     alert("Vehicle added successfully.");
+   } catch (error) {
+     console.error("Customer vehicle creation error:", error);
+ 
+     alert(
+       `Could not add vehicle: ${
+         error?.message || "Unknown database error"
+       }`
+     );
+   } finally {
+     customerVehicleSaving = false;
+ 
+     if (submitButton) {
+       submitButton.disabled = false;
+       submitButton.textContent = "Add Vehicle";
      }
    }
-   
-   /* =========================================================
-      EVENT BINDINGS
-      ========================================================= */
-   
-   function bindMechanicToolbar() {
-     const filterSelect = document.getElementById("mechanicJobFilter");
-     const searchInput = document.getElementById("mechanicJobSearch");
-   
-     if (filterSelect) {
-       filterSelect.addEventListener("change", function () {
-         mechanicBoardFilter = filterSelect.value;
-         mechanicBoardOpenJobId = null;
-         renderMechanicBoard();
-       });
-     }
-   
-     if (searchInput) {
-       searchInput.addEventListener("input", function () {
-         mechanicBoardSearch = searchInput.value.trim();
-         mechanicBoardOpenJobId = null;
-         renderMechanicBoard();
-       });
-     }
+ }
+ 
+ 
+ /* =========================================================
+    9. REMOVE VEHICLE FROM CUSTOMER GARAGE
+ 
+    This does not permanently delete the database record.
+    It changes the vehicle status to inactive.
+    ========================================================= */
+ 
+ async function removeCustomerVehicle(vehicleId) {
+   const customerId = getAuthenticatedCustomerId();
+ 
+   if (!customerId) {
+     alert("Your customer session has expired. Please sign in again.");
+     return;
    }
-   
-   function bindMechanicJobButtons() {
-     document.querySelectorAll("[data-mechanic-job-toggle]").forEach((button) => {
-       button.addEventListener("click", function () {
-         const jobId = button.dataset.mechanicJobToggle;
-   
-         mechanicBoardOpenJobId =
-           String(mechanicBoardOpenJobId) === String(jobId) ? null : jobId;
-   
-         renderMechanicBoard();
-       });
+ 
+   const vehicle = customerVehicleRecords.find((record) => {
+     return String(record.id) === String(vehicleId);
+   });
+ 
+   const vehicleTitle = vehicle
+     ? getCustomerVehicleTitle(vehicle)
+     : "this vehicle";
+ 
+   const confirmed = window.confirm(
+     `Remove ${vehicleTitle} from your garage?`
+   );
+ 
+   if (!confirmed) return;
+ 
+   const { error } = await supabaseClient
+     .from("vehicles")
+     .update({
+       status: "inactive",
+       updated_at: new Date().toISOString(),
+     })
+     .eq("id", vehicleId)
+     .eq("customer_id", customerId);
+ 
+   if (error) {
+     console.error("Customer vehicle removal error:", error);
+ 
+     alert(`Could not remove vehicle: ${error.message}`);
+     return;
+   }
+ 
+   await loadCustomerVehicles();
+ }
+ 
+ 
+ /* =========================================================
+    10. EVENT BINDINGS
+    ========================================================= */
+ 
+ function bindCustomerVehicleEvents() {
+   if (
+     customerVehicleForm &&
+     !window.__customerVehicleFormBound
+   ) {
+     customerVehicleForm.addEventListener(
+       "submit",
+       saveCustomerVehicle
+     );
+ 
+     window.__customerVehicleFormBound = true;
+   }
+ 
+   if (!window.__customerVehicleActionsBound) {
+     document.addEventListener("click", async function (event) {
+       const removeButton = event.target.closest(
+         "[data-remove-customer-vehicle]"
+       );
+ 
+       if (!removeButton) return;
+ 
+       event.preventDefault();
+ 
+       await removeCustomerVehicle(
+         removeButton.dataset.removeCustomerVehicle
+       );
      });
-   
-     document.querySelectorAll(".save-mechanic-job-btn").forEach((button) => {
-       button.addEventListener("click", async function () {
-         await saveMechanicJob(button.dataset.id, button);
-       });
-     });
+ 
+     window.__customerVehicleActionsBound = true;
    }
-   
-   /* =========================================================
-      HELPERS
-      ========================================================= */
-   
-   function getFullVehicleInfo(job) {
-     const vehicle = job.vehicles || {};
-     const fallback = parseMechanicVehicleDisplay(job.vehicle);
-   
-     const title = [
-       vehicle.year,
-       vehicle.make,
-       vehicle.model,
-       vehicle.trim
-     ].filter(Boolean).join(" ");
-   
-     return {
-       title: title || fallback.main || "Vehicle",
-       year: vehicle.year || "",
-       make: vehicle.make || "",
-       model: vehicle.model || "",
-       trim: vehicle.trim || "",
-       plate: vehicle.license_plate || fallback.plate || "",
-       vin: vehicle.vin || "",
-       mileage: vehicle.mileage || "",
-       notes: vehicle.notes || ""
-     };
-   }
-   
-   function renderMechanicJobStatusOptions(currentStatus) {
-     const statuses = [
-       ["created", "Created"],
-       ["acknowledged", "Acknowledged"],
-       ["diagnosing", "Diagnosing"],
-       ["waiting_parts", "Waiting Parts"],
-       ["repairing", "Repairing"],
-       ["testing", "Testing"],
-       ["ready_for_pickup", "Ready For Pickup"],
-       ["closed", "Closed"],
-       ["cancelled", "Cancelled"]
-     ];
-   
-     return statuses.map(([value, label]) => {
-       return `<option value="${value}" ${value === currentStatus ? "selected" : ""}>${label}</option>`;
-     }).join("");
-   }
-   
-   function parseMechanicVehicleDisplay(vehicleText) {
-     const raw = String(vehicleText || "").trim();
-   
-     if (!raw) return { main: "Vehicle not provided", plate: "" };
-   
-     const plateMatch = raw.match(/plate:\s*(.+)$/i);
-   
-     if (!plateMatch) return { main: raw, plate: "" };
-   
-     return {
-       main: raw.replace(/plate:\s*(.+)$/i, "").trim(),
-       plate: plateMatch[1].trim().toUpperCase()
-     };
-   }
-   
-   function shortText(value, limit = 60) {
-     const text = String(value || "").trim();
-     return text.length <= limit ? text : text.slice(0, limit) + "...";
-   }
-   
-   function showAdminToast(message, type = "success") {
-     let toast = document.getElementById("adminToast");
-   
-     if (!toast) {
-       toast = document.createElement("div");
-       toast.id = "adminToast";
-       document.body.appendChild(toast);
-     }
-   
-     toast.className = `admin-toast admin-toast-${type}`;
-     toast.textContent = message;
-   
-     setTimeout(() => toast.classList.add("show"), 50);
-     setTimeout(() => toast.classList.remove("show"), 3000);
-   }
+ }
+ 
+ 
+ /* =========================================================
+    11. INITIALIZATION
+    ========================================================= */
+ 
+ bindCustomerVehicleEvents();
+ 
+ 
+ /* =========================================================
+    12. GLOBAL EXPORTS
+ 
+    js/customer.js calls loadCustomerVehicles after confirming
+    the customer's session.
+    ========================================================= */
+ 
+ window.loadCustomerVehicles = loadCustomerVehicles;
+ window.renderCustomerVehicles = renderCustomerVehicles;
+ window.saveCustomerVehicle = saveCustomerVehicle;
+ window.removeCustomerVehicle = removeCustomerVehicle;
